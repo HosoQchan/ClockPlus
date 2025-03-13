@@ -3,7 +3,7 @@
 
 
 # 動作画面  
-![Image](https://github.com/user-attachments/assets/3868f8f2-8dc8-4e73-b0a3-10a57909579d)  
+![Image](https://github.com/user-attachments/assets/455bc28b-3331-4395-85a3-5085e54b9b7d)  
 
 # 特徴    
 表示のデザインを自由にカスタマイズ出来るのが特徴です。
