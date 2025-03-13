@@ -33,7 +33,7 @@ skinの適用は、アナログ時計の設定画面から行えます。
 # 使い方  
 基本的な操作としては、時計をD&Dで移動、右クリックの「設定」で表示の設定、「閉じる」で時計を非表示です。
 再度時計を表示するには、タスクバー上のClockPlusアイコンを右クリックして「基本設定」画面から行って下さい。  
-<img width="189" alt="Image" src="https://github.com/user-attachments/assets/f4e971b7-5d1f-4294-a282-e557c10daf4c" />  
+<img width="189" alt="Image" src="https://github.com/user-attachments/assets/f4e971b7-5d1f-4294-a282-e557c10daf4c" />
 ![Image](https://github.com/user-attachments/assets/7cdaef2e-a0bc-4617-9421-d10251618750)  
 
 また、Windows起動時に実行させたい場合、現状お手数ですが手動にてスタートアップに登録してください。  
