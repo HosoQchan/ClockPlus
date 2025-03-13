@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClockPlus", "ClockPlus\ClockPlus.csproj", "{17F39F6D-2963-49C3-8511-A3003243424A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{C830ADA5-DBE6-4C1B-A880-B64B44657868}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Debug|x64.ActiveCfg = Debug|x64
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Debug|x64.Build.0 = Debug|x64
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Release|x64.ActiveCfg = Release|x64
+		{17F39F6D-2963-49C3-8511-A3003243424A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD7D718C-8FAC-4FAA-8617-5597CF7468F2}
+	EndGlobalSection
+EndGlobal

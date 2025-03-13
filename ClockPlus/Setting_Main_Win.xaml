@@ -1,0 +1,171 @@
+﻿<metro:MetroWindow x:Name="Setting_Main_Win_Form"
+        x:Class="ClockPlus.Setting_Main_Win"
+                   
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                   
+        xmlns:local="clr-namespace:ClockPlus"
+        xmlns:converter="clr-namespace:ClockPlus"
+        mc:Ignorable="d"
+        
+        Title="基本設定" TitleCharacterCasing="Normal" FontSize="14" FontFamily="Meiryo" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ShowSystemMenuOnRightClick="False" ShowSystemMenu="False" ShowMinButton="False" ShowMaxRestoreButton="False" ResizeMode="NoResize" Icon="./icon/Setting.png" Loaded="Setting_Main_Window_Loaded" >
+
+    <metro:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- MahApps -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Indigo.xaml" />
+
+                <!-- Material Design -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Purple.xaml" />
+
+                <!-- Material Design: MahApps Compatibility -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- MahApps Brushes -->
+            <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource Primary700}"/>
+            <SolidColorBrush x:Key="AccentBaseColorBrush" Color="{DynamicResource Primary600}" />
+            <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="AccentColorBrush2" Color="{DynamicResource Primary400}"/>
+            <SolidColorBrush x:Key="AccentColorBrush3" Color="{DynamicResource Primary300}"/>
+            <SolidColorBrush x:Key="AccentColorBrush4" Color="{DynamicResource Primary200}"/>
+            <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource Primary700}"/>
+            <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+            <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+                <GradientStop Color="{DynamicResource Primary700}" Offset="0"/>
+                <GradientStop Color="{DynamicResource Primary300}" Offset="1"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="CheckmarkFill" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="RightArrowFill" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+            <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4"/>
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchBrush.Win10" Color="{DynamicResource Primary500}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource Primary400}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource Primary500Foreground}" />
+
+        </ResourceDictionary>
+    </metro:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <!-- 設定のパネル -->
+        <Grid x:Name="Setting_Grid" Visibility="{Binding Visible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="起動" VerticalAlignment="Center" Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}"/>
+                <Grid Grid.Row="1" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Windows起動時に実行" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1"/>
+                    <CheckBox x:Name="AutoStart_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" Grid.Row="1" Checked="AutoStart_CheckBox_Checked" Unchecked="AutoStart_CheckBox_Unchecked"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Content="時報" VerticalAlignment="Center" Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}"/>
+                <Grid Grid.Row="1" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="時報を鳴らす" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1"/>
+                    <CheckBox x:Name="Signal_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" Grid.Row="1" Checked="Signal_CheckBox_Checked" Unchecked="Signal_CheckBox_Unchecked"/>
+                    <Button x:Name="Signal_Setting_Button" Grid.Column="2" Content="設定" IsEnabled="False" Grid.Row="1" Click="Signal_Setting_Button_Click" Margin="4,4,4,4"/>
+                </Grid>
+                <Grid Grid.Row="2" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="音声案内" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1"/>
+                    <CheckBox x:Name="Voice_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" Grid.Row="1" Checked="Voice_CheckBox_Checked" Unchecked="Voice_CheckBox_Unchecked"/>
+                    <Button x:Name="Voice_Setting_Button" Grid.Column="2" Content="設定" IsEnabled="False" Grid.Row="1" Margin="4,4,4,4" Click="Voice_Setting_Button_Click"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Content="時計表示" VerticalAlignment="Center" Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}"/>
+                <Grid Grid.Row="1" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="アナログ時計を表示" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="Analog_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" Checked="Analog_CheckBox_Checked" Unchecked="Analog_CheckBox_Unchecked"/>
+                    <Button x:Name="Analog_Setting_Button" Grid.Column="2" Content="設定" IsEnabled="False" Click="Analog_Setting_Button_Click" Margin="4,4,4,4"/>
+                </Grid>
+                <Grid Grid.Row="2" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="デジタル時計1を表示" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="Digital1_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" Checked="Digital1_CheckBox_Checked" Unchecked="Digital1_CheckBox_Unchecked"/>
+                    <Button x:Name="Digital1_Setting_Button" Grid.Column="2" Content="設定" IsEnabled="False" Click="Digital1_Setting_Button_Click" Margin="4,4,4,4"/>
+                </Grid>
+                <Grid Grid.Row="3" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="デジタル時計2を表示" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="Digital2_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" Checked="Digital2_CheckBox_Checked" Unchecked="Digital2_CheckBox_Unchecked"/>
+                    <Button x:Name="Digital2_Setting_Button" Grid.Column="2" Content="設定" IsEnabled="False" Click="Digital2_Setting_Button_Click" Margin="4,4,4,4"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <!-- 設定のパネル -->
+        <StackPanel Grid.Row="2" Background="{DynamicResource AccentColorBrush4}">
+            <Button x:Name="Ok_Button" Content="決定" Height="35" Margin="4,4,4,4" Click="Ok_Button_Click"/>
+        </StackPanel>
+    </Grid>
+
+</metro:MetroWindow>
+
+
+
+

@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	  <UseWindowsForms>true</UseWindowsForms>
+	  <ApplicationManifest>app.manifest</ApplicationManifest>
+	  <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="app.manifest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Clock.png" />
+    <None Remove="ClockPlus.png" />
+    <None Remove="Close.png" />
+    <None Remove="Edit.png" />
+    <None Remove="Font.png" />
+    <None Remove="Gomi.png" />
+    <None Remove="Music_Play.png" />
+    <None Remove="Music_Stop.png" />
+    <None Remove="Paint.png" />
+    <None Remove="Pause.png" />
+    <None Remove="Reset.png" />
+    <None Remove="Setting.png" />
+    <None Remove="Speaker.png" />
+    <None Remove="Timer.png" />
+    <None Remove="Voice.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro.IconPacks.MaterialDesign" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.3.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.Speech" Version="8.0.0" />
+    <PackageReference Include="WindowsShortcutFactory" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon\Clock.png" />
+    <Resource Include="icon\ClockPlus.png" />
+    <Resource Include="icon\Close.png" />
+    <Resource Include="icon\Edit.png" />
+    <Resource Include="icon\Font.png" />
+    <Resource Include="icon\Gomi.png" />
+    <Resource Include="icon\Music_Play.png" />
+    <Resource Include="icon\Music_Stop.png" />
+    <Resource Include="icon\Paint.png" />
+    <Resource Include="icon\Pause.png" />
+    <Resource Include="icon\Reset.png" />
+    <Resource Include="icon\Setting.png" />
+    <Resource Include="icon\Speaker.png" />
+    <Resource Include="icon\Timer.png" />
+    <Resource Include="icon\Voice.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Clock.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,196 @@
+﻿<metro:MetroWindow x:Name="Setting_Analog_Win_Form"
+        x:Class="ClockPlus.Setting_Analog_Win"
+                   
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                   
+        xmlns:local="clr-namespace:ClockPlus"
+        xmlns:converter="clr-namespace:ClockPlus"
+        mc:Ignorable="d"
+        
+        Title="アナログ時計表示" TitleCharacterCasing="Normal" FontSize="14" FontFamily="Meiryo" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ShowSystemMenuOnRightClick="False" ShowSystemMenu="False" ShowMinButton="False" ShowMaxRestoreButton="False" ResizeMode="NoResize" Icon="./icon/Paint.png" Loaded="Setting_Analog_Window_Loaded">
+
+    <metro:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- MahApps -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Indigo.xaml" />
+
+                <!-- Material Design -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Purple.xaml" />
+
+                <!-- Material Design: MahApps Compatibility -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- MahApps Brushes -->
+            <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource Primary700}"/>
+            <SolidColorBrush x:Key="AccentBaseColorBrush" Color="{DynamicResource Primary600}" />
+            <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="AccentColorBrush2" Color="{DynamicResource Primary400}"/>
+            <SolidColorBrush x:Key="AccentColorBrush3" Color="{DynamicResource Primary300}"/>
+            <SolidColorBrush x:Key="AccentColorBrush4" Color="{DynamicResource Primary200}"/>
+            <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource Primary700}"/>
+            <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+            <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+                <GradientStop Color="{DynamicResource Primary700}" Offset="0"/>
+                <GradientStop Color="{DynamicResource Primary300}" Offset="1"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="CheckmarkFill" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="RightArrowFill" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+            <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4"/>
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchBrush.Win10" Color="{DynamicResource Primary500}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource Primary400}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource Primary500Foreground}" />
+
+        </ResourceDictionary>
+    </metro:MetroWindow.Resources>
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" Background="{DynamicResource AccentColorBrush4}">
+                <Button x:Name="Cancel_Button" Content="キャンセル" Height="35" Click="Cancel_Button_Click" Margin="4,4,4,4"/>
+                <Button x:Name="Ok_Button" Content="決定" Height="35" Click="Ok_Button_Click" Margin="4,4,4,4"/>
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1" Margin="4,4,4,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Slider x:Name="Size_Slider" IsSnapToTickEnabled="True" TickFrequency="0.01" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,0" Minimum="0.01" Value="1" Maximum="2" ValueChanged="Size_Slider_ValueChanged" LargeChange="0.1" SmallChange="0.01"/>
+                            <Label x:Name="Size_Label" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="100"/>
+                        </Grid>
+                        <Label Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}" Content="倍率" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Grid.Row="1"/>
+                    </Grid>
+                </Grid>
+                <Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="4"/>
+                            </Grid.RowDefinitions>
+                            <Label Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}" Content="外観" VerticalContentAlignment="Center"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="外観:" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="Skin_ComboBox" Grid.Column="1" SelectionChanged="Skin_ComboBox_SelChanged"/>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="4"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="4"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="4"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                            <Label Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}" Content="位置" VerticalContentAlignment="Center"/>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="縦軸:" HorizontalAlignment="Right"/>
+                                <Slider x:Name="Height_Slider" IsSnapToTickEnabled="True" TickFrequency="1" VerticalAlignment="Center" SmallChange="1" LargeChange="10" Maximum="100" Grid.Column="1" ValueChanged="Height_Slider_ValueChanged"/>
+                                <Label x:Name="Height_Label" Content="1000" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
+                            </Grid>
+                            <Grid Grid.Row="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="横軸:" HorizontalAlignment="Right"/>
+                                <Slider x:Name="Width_Slider" IsSnapToTickEnabled="True" TickFrequency="1" VerticalAlignment="Center" SmallChange="1" LargeChange="10" Maximum="100" Grid.Column="1" ValueChanged="Width_Slider_ValueChanged"/>
+                                <Label x:Name="Width_Label" Content="1000" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"/>
+                            </Grid>
+                            <Grid Grid.Row="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="最前面に表示" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <CheckBox x:Name="TopMost_CheckBox" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" Grid.Column="1" Checked="TopMost_CheckBox_Checked" Unchecked="TopMost_CheckBox_Unchecked"/>
+                                <Button x:Name="Position_Ini_Button" FontFamily="Meiryo" Click="Position_Ini_Button_Click" Background="{DynamicResource AccentSelectedColorBrush}" BorderBrush="{DynamicResource MahApps.Brushes.Accent}" Margin="4,4,4,4" Content="初期値" Foreground="{DynamicResource MaterialDesignLightForeground}" Grid.Column="3"/>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="4"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="4"/>
+                            </Grid.RowDefinitions>
+                            <Label Background="LightSeaGreen" Foreground="{DynamicResource MaterialDesignDarkForeground}" Content="不透明度" VerticalContentAlignment="Center"/>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Slider x:Name="Opacity_Slider" IsSnapToTickEnabled="True" Maximum="100" SmallChange="1" ValueChanged="Opacity_Slider_ValueChange" VerticalAlignment="Center" LargeChange="10"/>
+                                <Label x:Name="Opacity_Label" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="100" Grid.Column="1"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>

@@ -1,0 +1,162 @@
+﻿<metro:MetroWindow x:Name="About_Win_Form"
+        x:Class="ClockPlus.About_Win"
+                   
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                   
+        xmlns:local="clr-namespace:ClockPlus"
+        xmlns:converter="clr-namespace:ClockPlus"
+        mc:Ignorable="d"
+                   
+        Title="About" TitleCharacterCasing="Normal" FontSize="14" FontFamily="Meiryo" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ShowSystemMenuOnRightClick="False" ShowSystemMenu="False" ShowMinButton="False" ShowMaxRestoreButton="False" ShowTitleBar="False" ShowCloseButton="False" ResizeMode="NoResize" WindowStyle="None"  Loaded="About_Window_Loaded">
+
+    <metro:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- MahApps -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Indigo.xaml" />
+
+                <!-- Material Design -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Purple.xaml" />
+
+                <!-- Material Design: MahApps Compatibility -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- MahApps Brushes -->
+            <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource Primary700}"/>
+            <SolidColorBrush x:Key="AccentBaseColorBrush" Color="{DynamicResource Primary600}" />
+            <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="AccentColorBrush2" Color="{DynamicResource Primary400}"/>
+            <SolidColorBrush x:Key="AccentColorBrush3" Color="{DynamicResource Primary300}"/>
+            <SolidColorBrush x:Key="AccentColorBrush4" Color="{DynamicResource Primary200}"/>
+            <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource Primary700}"/>
+            <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+            <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+                <GradientStop Color="{DynamicResource Primary700}" Offset="0"/>
+                <GradientStop Color="{DynamicResource Primary300}" Offset="1"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="CheckmarkFill" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="RightArrowFill" Color="{DynamicResource Primary500}"/>
+            <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+            <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4"/>
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchBrush.Win10" Color="{DynamicResource Primary500}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource Primary400}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource Primary500Foreground}" />
+
+        </ResourceDictionary>
+    </metro:MetroWindow.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="cardHeader" Grid.Row="0" Background="{DynamicResource MahApps.Brushes.Accent}" Grid.ColumnSpan="2">
+            <StackPanel>
+                <TextBlock x:Name="txtTitle" HorizontalAlignment="Center" VerticalAlignment="Stretch" Style="{DynamicResource MaterialDesignTitleTextBlock}" FontSize="20" Margin="0,16,0,16" Text="About" Foreground="White">
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Name="PART_Image" Stretch="Fill" Width="64" Height="64" />
+                        <materialDesignMahApps:TransitioningContent Grid.Column="1">
+                            <materialDesignMahApps:TransitioningContent.OpeningEffects >
+                                <materialDesignMahApps:TransitionEffect Kind="FadeIn" />
+                                <materialDesignMahApps:TransitionEffect Kind="SlideInFromBottom" />
+                            </materialDesignMahApps:TransitioningContent.OpeningEffects>
+                            <Grid>
+                               
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="ClockPlus"/>
+                                    <Label x:Name="Label_Ver" Content="Ver1.0.0.0" Grid.Column="1"/>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Copyright©"/>
+                                    <Label Content="H.Hosokawa" Grid.Column="1"/>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="GitHub"/>
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center">
+                                        <Hyperlink NavigateUri = "https://github.com/HosoQchan/ClockPlus"
+                                            RequestNavigate = "Hyperlink_RequestNavigate">
+                                            開く
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </materialDesignMahApps:TransitioningContent>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="このソフトウェアは"/>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center">
+                        <Hyperlink NavigateUri = "https://ja.wikipedia.org/wiki/MIT_License"
+                            RequestNavigate = "Hyperlink_RequestNavigate">
+                            MIT license
+                        </Hyperlink>
+                    </TextBlock>
+                    <Label Content="となります" Grid.Column="2"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Button x:Name="Close_Button" Click="Close_Button_Click" Style="{StaticResource MaterialDesignRaisedButton}" Margin="5" Width="100" Content="OK" ToolTip="Ok"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>
+    
+ 
