@@ -1,0 +1,143 @@
+﻿<metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+    
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:local="clr-namespace:ClockPlus"
+        x:Class="ClockPlus.Form_Edit_Timer"
+        x:Name="Edit_Timer"
+        Title="タイマー設定" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowInTaskbar="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" ResizeMode="NoResize" FontFamily="Meiryo UI" Icon="./Resources/icon/Timer.ico" Width="420" Height="271.96">
+
+    <metro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}" FontSize="16" FontFamily="Meiryo UI" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="Normal" Margin="8 -1 8 0"/>
+        </DataTemplate>
+    </metro:MetroWindow.TitleTemplate>
+    
+<Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="取り消し" Click="Button_Cancel_Click" Width="100" Height="30" Margin="2,2,2,2" FontFamily="Meiryo UI" FontWeight="Normal" FontSize="11" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+            <Button Content="保存" Click="Button_Ok_Click" Width="100" Height="30" Margin="2,2,2,2" FontFamily="Meiryo UI" FontWeight="Normal" FontSize="11" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+        </StackPanel>
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="2,2,2,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock TextWrapping="Wrap" Text="名称" FontSize="18" FontFamily="Meiryo UI" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBox x:Name="TextBox_Task_Name" Grid.Column="1" TextWrapping="Wrap" Text="TextBox" Height="30" VerticalAlignment="Center" FontFamily="Meiryo UI" FontSize="18" VerticalContentAlignment="Center"/>
+        </Grid>
+            <Grid Grid.Row="1" Margin="1,1,1,1">
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <CheckBox x:Name="CheckBox_1s" Content="１分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_3s" Content="３分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_5s" Content="５分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_10s" Content="１０分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_15s" Content="１５分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_30s" Content="３０分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_45s" Content="４５分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                    <CheckBox x:Name="CheckBox_60s" Content="６０分" Style="{DynamicResource MahApps.Styles.ToggleButton.Circle}" Width="50" Height="30" Checked="CheckBox_Timer_Sec_Checked" Unchecked="CheckBox_Timer_Sec_Unchecked"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2" Margin="1,1,1,1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="48"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock TextWrapping="Wrap" Text="時刻" FontSize="18" FontFamily="Meiryo UI" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <Button x:Name="TimePic_Button" ToolTip="時刻入力用のフォームが起動されます" FontFamily="Meiryo" Click="TimePic_Button_Click" Grid.Column="1" Height="30" Margin="2,2,2,2" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}">
+                    <Image Source="./Resources/icon/Clock_Analog.ico" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="ComboBox_Hour" FlowDirection="RightToLeft" HorizontalContentAlignment="Left" FontSize="18" FontFamily="Meiryo UI" SelectionChanged="ComboBox_Hour_SelectionChanged"/>
+                    <TextBlock TextWrapping="Wrap" Text="時間" FontSize="18" FontFamily="Meiryo UI" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="ComboBox_Min" Grid.Column="2" FlowDirection="RightToLeft" HorizontalContentAlignment="Left" FontSize="18" FontFamily="Meiryo UI" SelectionChanged="ComboBox_Min_SelectionChanged"/>
+                    <TextBlock TextWrapping="Wrap" Text="分" FontSize="18" FontFamily="Meiryo UI" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
+            <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}" Header="実行する内容" Grid.Row="3" Margin="1,1,1,1" FontSize="14" Height="100" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
+                <Grid ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap" Text="サウンド再生" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_Alarm" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Alarm_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1"/>
+                        </Grid>
+                        <Button x:Name="Alarm_Setting_Button" ToolTip="サウンド設定を開きます" FontFamily="Meiryo UI" Click="Alarm_Setting_Button_Click" Margin="2,2,2,2" Height="30" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" FontSize="11" Grid.Row="1" HorizontalAlignment="Center">
+                            <Image x:Name="Image_Alarm" Source="./Resources/icon/Music.ico"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap" Text="アプリの起動" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_App" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_App_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1"/>
+                        </Grid>
+                        <Button x:Name="App_Setting_Button" ToolTip="アプリの起動設定を開きます" FontFamily="Meiryo UI" Click="App_Setting_Button_Click" Margin="2,2,2,2" Height="30" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" FontSize="11" Grid.Row="1" HorizontalAlignment="Center">
+                            <Image x:Name="Image_App" Source="./Resources/icon/OpenApp.ico"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap" Text="電源制御" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_Power" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Power_Toggled" Margin="2,2,2,2" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" FontSize="11" OffContent="" OnContent="" HorizontalAlignment="Left" Grid.Column="1"/>
+                        </Grid>
+                        <ComboBox x:Name="ComboBox_Power" SelectionChanged="ComboBox_Power_SelectionChanged" Height="30" FontFamily="Meiryo UI" FontSize="11" Margin="1,1,1,1" Grid.Row="1"/>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+        </Grid>
+</Grid>
+</metro:MetroWindow>

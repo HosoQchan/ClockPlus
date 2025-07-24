@@ -1,0 +1,217 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<SatelliteResourceLanguages>ja</SatelliteResourceLanguages>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	  <UseWindowsForms>true</UseWindowsForms>
+	  <ApplicationManifest>app.manifest</ApplicationManifest>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ApplicationIcon>Resources\icon\ClockPlus.ico</ApplicationIcon>
+	  <AssemblyVersion>2.0.0.0</AssemblyVersion>
+	  <FileVersion>2.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="app.manifest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Clock.png" />
+    <None Remove="ClockPlus.png" />
+    <None Remove="Close.png" />
+    <None Remove="Edit.png" />
+    <None Remove="Font.png" />
+    <None Remove="Gomi.png" />
+    <None Remove="Music_Play.png" />
+    <None Remove="Music_Stop.png" />
+    <None Remove="Paint.png" />
+    <None Remove="Pause.png" />
+    <None Remove="Reset.png" />
+    <None Remove="Resources\icon\Alarm.ico" />
+    <None Remove="Resources\icon\Bell.ico" />
+    <None Remove="Resources\icon\Clock_Analog.ico" />
+    <None Remove="Resources\icon\Clock_Digital.ico" />
+    <None Remove="Resources\icon\Close.ico" />
+    <None Remove="Resources\icon\Delete.ico" />
+    <None Remove="Resources\icon\Edit.ico" />
+    <None Remove="Resources\icon\Font.ico" />
+    <None Remove="Resources\icon\key.ico" />
+    <None Remove="Resources\icon\Log.ico" />
+    <None Remove="Resources\icon\Message.ico" />
+    <None Remove="Resources\icon\Music.ico" />
+    <None Remove="Resources\icon\play.ico" />
+    <None Remove="Resources\icon\Plus.ico" />
+    <None Remove="Resources\icon\Power.ico" />
+    <None Remove="Resources\icon\Reset.ico" />
+    <None Remove="Resources\icon\Setting.ico" />
+    <None Remove="Resources\icon\stop.ico" />
+    <None Remove="Resources\icon\StopWatch.ico" />
+    <None Remove="Resources\icon\Timer.ico" />
+    <None Remove="skin\Alarm\Clock_Face.png" />
+    <None Remove="skin\Alarm\Clock_Hand_Hours.png" />
+    <None Remove="skin\Alarm\Clock_Hand_Min.png" />
+    <None Remove="skin\Alarm\Clock_Hand_Sec.png" />
+    <None Remove="skin\Clock_Face.png" />
+    <None Remove="skin\Clock_Hand_Hours.png" />
+    <None Remove="skin\Clock_Hand_Min.png" />
+    <None Remove="skin\Clock_Hand_Sec.png" />
+    <None Remove="Setting.png" />
+    <None Remove="skin\Default\Clock_Face.png" />
+    <None Remove="skin\Default\Clock_Hand_Hours.png" />
+    <None Remove="skin\Default\Clock_Hand_Min.png" />
+    <None Remove="skin\Default\Clock_Hand_Sec.png" />
+    <None Remove="skin\Neon\Clock_Face.png" />
+    <None Remove="skin\Neon\Clock_Hand_Hours.png" />
+    <None Remove="skin\Neon\Clock_Hand_Min.png" />
+    <None Remove="skin\Neon\Clock_Hand_Sec.png" />
+    <None Remove="sound\Alarm.wav" />
+    <None Remove="sound\Furusato.wav" />
+    <None Remove="sound\Jihou.wav" />
+    <None Remove="sound\School.wav" />
+    <None Remove="sound\Sleep.wav" />
+    <None Remove="sound\Tetudou_sanka.wav" />
+    <None Remove="Speaker.png" />
+    <None Remove="Timer.png" />
+    <None Remove="Voice.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="icon\ClockPlus.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Resource Include="Resources\icon\ClockPlus.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <EmbeddedResource Include="skin\Alarm\Clock_Face.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Alarm\Clock_Hand_Hours.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Alarm\Clock_Hand_Min.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Alarm\Clock_Hand_Sec.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Default\Clock_Face.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Default\Clock_Hand_Hours.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Default\Clock_Hand_Min.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Default\Clock_Hand_Sec.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Neon\Clock_Face.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Neon\Clock_Hand_Hours.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Neon\Clock_Hand_Min.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="skin\Neon\Clock_Hand_Sec.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\Alarm.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\Furusato.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\Jihou.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\School.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\Sleep.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sound\Tetudou_sanka.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="TaskScheduler" Version="2.12.2" />
+    <PackageReference Include="WindowsShortcutFactory" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NAudio">
+      <HintPath>..\library\NAudio.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\icon\Alarm.ico" />
+    <Resource Include="Resources\icon\Bell.ico" />
+    <Resource Include="Resources\icon\Calender.ico" />
+    <Resource Include="Resources\icon\Clock_Analog.ico" />
+    <Resource Include="Resources\icon\Clock_Digital.ico" />
+    <Resource Include="Resources\icon\Close.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icon\Delete.ico" />
+    <Resource Include="Resources\icon\Edit.ico" />
+    <Resource Include="Resources\icon\Font.ico" />
+    <Resource Include="Resources\icon\key.ico" />
+    <Resource Include="Resources\icon\Log.ico" />
+    <Resource Include="Resources\icon\Message.ico" />
+    <Resource Include="Resources\icon\Music.ico" />
+    <Resource Include="Resources\icon\OpenApp.ico" />
+    <Resource Include="Resources\icon\play.ico" />
+    <Resource Include="Resources\icon\Plus.ico" />
+    <Resource Include="Resources\icon\Power.ico" />
+    <Resource Include="Resources\icon\Reset.ico" />
+    <Resource Include="Resources\icon\Setting.ico" />
+    <Resource Include="Resources\icon\stop.ico" />
+    <Resource Include="Resources\icon\StopWatch.ico" />
+    <Resource Include="Resources\icon\Timer.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

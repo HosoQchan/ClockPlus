@@ -1,0 +1,126 @@
+﻿<metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+    
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:local="clr-namespace:ClockPlus"
+        x:Class="ClockPlus.Form_Timer_List"
+    
+        Title="タイマー一覧" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowInTaskbar="True" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Icon="./Resources/icon/Timer.ico" Width="269.33" MinWidth="269.33" MaxWidth="269.33" Height="322.67" MinHeight="322.67">
+
+    <metro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}" FontSize="16" FontFamily="Meiryo UI" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="Normal" Margin="8 -1 8 0"/>
+        </DataTemplate>
+    </metro:MetroWindow.TitleTemplate>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- リストのパネル -->
+        <Grid x:Name="Grid_NoTask">
+            <TextBlock TextWrapping="Wrap" Text="登録されていません" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid x:Name="Grid_Task_List">
+            <ListView  x:Name="ListView_Task" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding}" SelectionChanged="ListView_Task_SelectionChanged">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="244" Height="71.5" BorderThickness="1" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Margin="2,2,2,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="名称: " FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TextBlock_Task_Name" Grid.Column="1" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Center" FontFamily="Meiryo UI" FontSize="14" HorizontalAlignment="Left"/>
+                                </Grid>
+
+                                <Grid x:Name="Grid_Time" Grid.Row="1" Margin="1,1,1,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="1">
+                                        <TextBlock x:Name="TextBlock_Min" TextWrapping="Wrap" Text="{Binding Min}" FontSize="14" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid Grid.Row="2" Width="242">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="実行する内容" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                    <Border BorderBrush="{DynamicResource MahApps.Brushes.Accent3}" BorderThickness="1" Grid.Row="1"/>
+                                    <Grid x:Name="Grid_AlarmApp" Visibility="{Binding Grid_AlarmApp}" ShowGridLines="True" Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="TextBlock_Alarm" TextWrapping="Wrap" Text="{Binding Alarm}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="TextBlock_App" TextWrapping="Wrap" Text="{Binding App}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"/>
+                                    </Grid>
+                                    <Grid x:Name="Grid_Power" Visibility="{Binding Grid_Power}" ShowGridLines="True" Grid.Row="1">
+                                        <TextBlock x:Name="TextBlock_Power" TextWrapping="Wrap" Text="{Binding Power}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <!-- リストのパネル -->
+        <Border Name="Border" BorderThickness="1" Grid.Row="1" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
+                    <Button x:Name="Button_Delete" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Click="Button_Delete_Click" FontFamily="Meiryo UI" FontSize="11" ToolTip="削除" Margin="1,1,1,1">
+                        <Image Source="./Resources/icon/Delete.ico" Width="20" Height="20"/>
+                    </Button>
+                    <Button x:Name="Button_Edit" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Click="Button_Edit_Click" FontFamily="Meiryo UI" FontSize="11" ToolTip="編集" Margin="1,1,1,1">
+                        <Image Source="./Resources/icon/Edit.ico" Width="20" Height="20"/>
+                    </Button>
+                    <Button x:Name="Button_Add" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Click="Button_Add_Click" FontFamily="Meiryo UI" FontSize="11" ToolTip="追加" Margin="1,1,1,1">
+                        <Image Source="./Resources/icon/plus.ico" Width="20" Height="20"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="開始" Click="Button_Start_Click" Width="100" Height="30" Margin="2,2,2,2" FontFamily="Meiryo UI" FontSize="11" FontWeight="Normal" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                <Button Content="閉じる" Click="Button_Close_Click" Width="100" Height="30" Margin="2,2,2,2" FontFamily="Meiryo UI" FontSize="11" FontWeight="Normal" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>

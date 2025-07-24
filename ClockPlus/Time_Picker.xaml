@@ -1,0 +1,58 @@
+﻿<metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+    
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:local="clr-namespace:ClockPlus"
+        x:Class="ClockPlus.Time_Picker"
+        Title="時刻" FontFamily="Meiryo" FontSize="14" WindowStartupLocation="CenterScreen" Cursor="" Loaded="Form_Load" ResizeMode="NoResize" ShowTitleBar="true" ShowSystemMenuOnRightClick="False" ShowSystemMenu="False" ShowMinButton="False" ShowMaxRestoreButton="False" ShowDialogsOverTitleBar="False" ShowCloseButton="true" SizeToContent="WidthAndHeight" Closed="Form_Closed" Icon="./Resources/icon/Clock_Analog.ico">
+
+    <metro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}" FontSize="16" FontFamily="Meiryo UI" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="Normal" Margin="8 -1 8 0"/>
+        </DataTemplate>
+    </metro:MetroWindow.TitleTemplate>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <materialDesignMahApps:Clock x:Name="_Clock" Language="ja-JP" Style="{DynamicResource MaterialDesignClockVertical}"/>
+            <Grid x:Name="Option_Grid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="NowTime_Button" Content="現在日時を取得" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" VerticalAlignment="Center" Click="NowTime_Button_Click" HorizontalAlignment="Stretch" Margin="2,2,2,2" FontFamily="Meiryo UI" FontSize="11"/>
+                <Grid Grid.Column="1" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="12/24H" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Meiryo UI" FontSize="11"/>
+                    <CheckBox x:Name="H24_CheckBox" Grid.Column="1" Style="{DynamicResource MaterialDesignSwitchAccentToggleButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Checked="H24_CheckBox_Checked" Unchecked="H24_CheckBox_Unchecked" FontSize="11" FontFamily="Meiryo UI"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="Cansel_Botton" Content="取り消し" Click="Cansel_Botton_Click" Margin="2,2,2,2" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" HorizontalAlignment="Stretch" FontFamily="Meiryo UI" FontSize="11" Height="30"/>
+            <Button x:Name="Ok_Botton" Content="決定" Click="Ok_Botton_Click" Margin="2,2,2,2" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Grid.Column="1" HorizontalAlignment="Stretch" FontFamily="Meiryo UI" Height="30" FontSize="11"/>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>

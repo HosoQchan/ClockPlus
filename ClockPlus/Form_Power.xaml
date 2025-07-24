@@ -1,0 +1,57 @@
+﻿<metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+    
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:local="clr-namespace:ClockPlus"
+        x:Class="ClockPlus.Form_Power"
+        x:Name="Power"
+        Title="電源制御" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" Icon="./Resources/icon/ClockPlus.ico" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Width="359.33" Height="158.67" ResizeMode="NoResize" Topmost="True">
+
+    <metro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}" FontSize="16" FontFamily="Meiryo UI" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="Normal" Margin="8 -1 8 0"/>
+        </DataTemplate>
+    </metro:MetroWindow.TitleTemplate>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Background="{DynamicResource MaterialDesign.Brush.Primary}">
+                <Image Name="PART_Image" Stretch="Fill" Margin="10,10,10,10" Source="/Resources/icon/Power.ico" />
+            </Grid>
+            <Grid Grid.Column="1" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Right" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" Text="まもなく " FontWeight="Bold"/>
+                <TextBlock x:Name="TextBlock_Message" Text="" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" Grid.Column="1" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" Text=" します。" Grid.Column="2" FontWeight="Bold"/>
+            </Grid>
+        </Grid>
+        
+        <TextBlock x:Name="TextBlock_Time" HorizontalAlignment="Center" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" Grid.Row="1" Text="10" FontWeight="Bold"/>
+        <ProgressBar x:Name="ProgressBar_Time" Grid.Row="2" FontSize="11" Value="100"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="Button_Ok" Click="Button_Ok_Click" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Margin="2,2,2,2" Width="100" Content="直ぐに実行"/>
+            <Button x:Name="Button_Cancel" Click="Button_Cancel_Click" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Margin="2,2,2,2" Width="100" Content="取り消し"/>
+        </StackPanel>
+    </Grid>
+</metro:MetroWindow>

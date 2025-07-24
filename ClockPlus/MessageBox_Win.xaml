@@ -1,0 +1,58 @@
+﻿<metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+    
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:local="clr-namespace:ClockPlus"
+        x:Class="ClockPlus.MessageBox_Ex"
+        x:Name="MessageBox"
+        Title="" WindowStartupLocation="CenterScreen" ShowTitleBar="true" Icon="./Resources/icon/ClockPlus.ico" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowInTaskbar="false" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Height="136" Width="412.67" ResizeMode="NoResize">
+
+    <metro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}" FontSize="16" FontFamily="Meiryo UI" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="Normal" Margin="8 -1 8 0"/>
+        </DataTemplate>
+    </metro:MetroWindow.TitleTemplate>
+    
+    <Grid VerticalAlignment="Bottom">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Name="PART_Image" Stretch="Fill" Width="50" Height="50" Margin="10,10,10,10" />
+                <materialDesignMahApps:TransitioningContent Grid.Column="1">
+                    <materialDesignMahApps:TransitioningContent.OpeningEffects >
+                        <materialDesignMahApps:TransitionEffect Kind="FadeIn" />
+                        <materialDesignMahApps:TransitionEffect Kind="SlideInFromBottom" />
+                    </materialDesignMahApps:TransitioningContent.OpeningEffects>
+                    <TextBlock x:Name="txtMessage" HorizontalAlignment="Center" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" Text=""/>
+                </materialDesignMahApps:TransitioningContent>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnOk" Click="btnOk_Click" Grid.Column="1" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Margin="2,2,2,2" Width="100" Content="OK" ToolTip="Ok"/>
+            <Button x:Name="btnCancel" Click="btnCancel_Click" Grid.Column="2" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Margin="2,2,2,2" Width="100" Content="Cancel" ToolTip="Cancel"/>
+            <Button x:Name="btnYes" Click="btnYes_Click" Grid.Column="1" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Margin="2,2,2,2" Width="100" Content="はい"/>
+            <Button x:Name="btnNo" Click="btnNo_Click" Grid.Column="2" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Margin="2,2,2,2" Width="100" Content="いいえ"/>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>
