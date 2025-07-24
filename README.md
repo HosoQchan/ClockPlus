@@ -3,11 +3,11 @@
 
 
 # 動作画面  
-<img width="240" height="247" alt="Image" src="https://github.com/user-attachments/assets/b8843a2c-2bad-4c74-a58a-7b9492791ddc" /> 
+<img width="320" height="208" alt="Image" src="https://github.com/user-attachments/assets/5b7a2515-8708-406f-9675-504b94fc2517" />  
 
-<img width="242" height="240" alt="Image" src="https://github.com/user-attachments/assets/6f422a16-4d1f-4734-9ec6-0f0198612706" /> 
+<img width="242" height="240" alt="Image" src="https://github.com/user-attachments/assets/8c931d3f-0600-42e8-b2ed-3b2a5e4e6d8c" />  
 
-<img width="320" height="208" alt="Image" src="https://github.com/user-attachments/assets/9890946d-7639-455a-a117-7a036a494b08" /> 
+<img width="240" height="247" alt="Image" src="https://github.com/user-attachments/assets/7d76f8f1-c758-428a-934f-8b79d356f728" />  
 
 
 # 特徴    
@@ -21,13 +21,13 @@
 
 ・テーマ(色の設定)機能。 
 
-<img width="635" height="480" alt="Image" src="https://github.com/user-attachments/assets/db5f89bc-91c7-4599-9478-9a0bbcfb939e" /> 
+<img width="635" height="480" alt="Image" src="https://github.com/user-attachments/assets/55d37a43-1536-4b14-82c1-f572f932bf37" />  
 
 
-<img width="640" height="400" alt="Image" src="https://github.com/user-attachments/assets/7e6e1bde-9992-489a-a272-f9974cccedc2" /> 
+<img width="640" height="400" alt="Image" src="https://github.com/user-attachments/assets/bd743f37-7cdc-4398-8c4c-6df88a858c1c" />  
 
 
-<img width="299" height="413" alt="Image" src="https://github.com/user-attachments/assets/cbeb0099-1797-4e5a-8354-767ff147a37a" /> 
+<img width="299" height="413" alt="Image" src="https://github.com/user-attachments/assets/a116c46d-56a3-4af1-b0b1-ab3ed6ba4b84" />  
 
 
 # 動作条件  
@@ -46,7 +46,7 @@ ClockPlus.zipを適当な場所に解凍して下さい。
 # 使い方 
 基本的な操作としては、時計をD&Dで移動、右クリックの「設定」で各種設定、「閉じる」で時計を非表示化出来ます。
 再度時計を表示するには、タスクバー上のClockPlusアイコンを右クリックして「設定」画面から行って下さい。  
-<img width="282" height="240" alt="Image" src="https://github.com/user-attachments/assets/b7b0cf86-85ac-4f60-aa70-b67b9614fdd3" /> 
+<img width="282" height="240" alt="Image" src="https://github.com/user-attachments/assets/1d7de215-597d-47c4-909d-79d69d496185" />  
 
 
 このソフトは起動するとタスクバーに常駐します。
