@@ -20,6 +20,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading.Tasks;
 using NAudio.Wave;
 using static MaterialDesignThemes.Wpf.Theme;
+using System.Windows.Controls.Primitives;
 
 namespace ClockPlus
 {
@@ -29,10 +30,11 @@ namespace ClockPlus
 
         private System.Threading.Mutex mutex = new System.Threading.Mutex(false, "ApplicationName");
 
-        private NotifyIcon notifyIcon = new NotifyIcon();
+        static public NotifyIcon notifyIcon = new NotifyIcon();
+
         private ContextMenuStrip ContextMenu = new ContextMenuStrip();
 
-        static public bool Admin_Restart = false;
+        static public int Power_Mode = 0;
         static public string Title = null;      // アプリ名
         static public string ExeFile = null;    // exeファイル名
         static public string LnkFile = null;    // リンク名
@@ -50,6 +52,10 @@ namespace ClockPlus
 
         private WaveOutEvent outputDevice = new WaveOutEvent();
         private AudioFileReader afr;
+        private WaveFileReader wfr;
+
+        static public bool Sound_Play_Flag = false;
+        static public bool Voice_Play_Flag = false;
 
         private Task_Ctrl task_ctrl = new Task_Ctrl();
 
@@ -88,8 +94,9 @@ namespace ClockPlus
             ContextMenu.Items[3].Click += Timer_Click;
             ContextMenu.Items[4].Click += StopWatch_Click;
             ContextMenu.Items[6].Click += Alarm_Stop_Click;
-            ContextMenu.Items[8].Click += About_Click;
-            ContextMenu.Items[10].Click += Close_Click;
+            ContextMenu.Items[8].Click += Weather_Click;
+            ContextMenu.Items[10].Click += About_Click;
+            ContextMenu.Items[12].Click += Close_Click;
 
             notifyIcon.Visible = true;
             notifyIcon.Icon = new Icon(".\\icon\\ClockPlus.ico");
@@ -99,6 +106,23 @@ namespace ClockPlus
             // メイン設定を読み込む
             XML_Main _XML_Main = new XML_Main();
             _XML_Main.XML_Main_Create();
+
+            // メッセージデータを読み込む
+            XML_Message _XML_Message = new XML_Message();
+            _XML_Message.XML_Message_Create();
+
+            //////// test /////////
+//            XML_Main.cnf.VoiceEngine.Engine_Name = "VoiceBox";
+//            XML_Main.cnf.VoiceEngine.Path = "C:\\Users\\hosoq\\AppData\\Local\\Programs\\VOICEVOX\\vv-engine";
+            //////// test /////////
+
+            // Voice_Engineのプロセスを開始する
+            if (XML_Main.cnf.VoiceEngine.Engine_Name != "無し")
+            {
+                Voice_Engine voice_Engine = new Voice_Engine();
+                int Port = Voice_Engine.Engine_DefaultPort[XML_Main.cnf.VoiceEngine.Engine_Name];
+                voice_Engine.Run(Port);
+            }
 
             // タスクリストを読み込む
             XML_Task _XML_Task = new XML_Task();
@@ -138,19 +162,44 @@ namespace ClockPlus
                 XML_Main _XML_Main = new XML_Main();
                 _XML_Main.XML_Main_save();
 
+                XML_Message _XML_Message = new XML_Message();
+                _XML_Message.XML_Message_save();
+
                 XML_Task _XML_Task = new XML_Task();
                 _XML_Task.XML_Task_save();
+
+                // Voice_Engineのプロセスを閉じる
+                Voice_Engine.Proc_Kill();
 
                 // イベントハンドラを削除
                 timer1.Enabled = false;             // タイマーを停止
 
-                // 管理者モードで再起動？
-                if (Admin_Restart)
+                switch (Power_Mode)
                 {
-                    if (!App.AdminRestart())
-                    {
-                        FormCtrl_Wpf.Error_Message("管理者権限での起動に失敗しました。");
-                    }
+                    // アプリの再起動(通常モード)
+                    case 1:
+                        if (!App.Restart())
+                        {
+                            FormCtrl_Wpf.Error_Message("再起動に失敗しました。");
+                        }
+                        break;
+                    // アプリの再起動(管理者モード)
+                    case 2:
+                        if (!App.AdminRestart())
+                        {
+                            FormCtrl_Wpf.Error_Message("管理者権限での起動に失敗しました。");
+                        }
+                        break;
+                    // Windowsの再起動(通常)
+                    case 3:
+                        Task_Ctrl.Win_Reboot();
+                        break;
+                    // Windowsのシャットダウン
+                    case 4:
+                        Task_Ctrl.Win_PowerOff();
+                        break;
+                    default:
+                        break;
                 }
                 mutex.ReleaseMutex();
                 mutex.Close();
@@ -178,23 +227,28 @@ namespace ClockPlus
             ToolStripMenuItem Menu_Alarm_Stop = new ToolStripMenuItem();
             Menu_Alarm_Stop.Text = "アラームの解除";
 
+            ToolStripMenuItem Menu_Weather = new ToolStripMenuItem();
+            Menu_Weather.Text = "天気予報(気象庁)のサイトを表示";
+
             ToolStripMenuItem Menu_About = new ToolStripMenuItem();
             Menu_About.Text = "About";
 
             ToolStripMenuItem Menu_Close = new ToolStripMenuItem();
             Menu_Close.Text = "終了";
 
-            ContextMenu.Items.Add(Menu_Setting);
-            ContextMenu.Items.Add(new ToolStripSeparator());
-            ContextMenu.Items.Add(Menu_Alarm);
-            ContextMenu.Items.Add(Menu_Timer);
-            ContextMenu.Items.Add(Menu_StopWatch);
-            ContextMenu.Items.Add(new ToolStripSeparator());
-            ContextMenu.Items.Add(Menu_Alarm_Stop);
-            ContextMenu.Items.Add(new ToolStripSeparator());
-            ContextMenu.Items.Add(Menu_About);
-            ContextMenu.Items.Add(new ToolStripSeparator());
-            ContextMenu.Items.Add(Menu_Close);
+            ContextMenu.Items.Add(Menu_Setting);                // [0]
+            ContextMenu.Items.Add(new ToolStripSeparator());    // [1]
+            ContextMenu.Items.Add(Menu_Alarm);                  // [2]
+            ContextMenu.Items.Add(Menu_Timer);                  // [3]
+            ContextMenu.Items.Add(Menu_StopWatch);              // [4]
+            ContextMenu.Items.Add(new ToolStripSeparator());    // [5]
+            ContextMenu.Items.Add(Menu_Alarm_Stop);             // [6]
+            ContextMenu.Items.Add(new ToolStripSeparator());    // [7]
+            ContextMenu.Items.Add(Menu_Weather);                // [8]
+            ContextMenu.Items.Add(new ToolStripSeparator());    // [9]
+            ContextMenu.Items.Add(Menu_About);                  // [10]
+            ContextMenu.Items.Add(new ToolStripSeparator());    // [11]
+            ContextMenu.Items.Add(Menu_Close);                  // [12]
             return ContextMenu;
         }
 
@@ -204,6 +258,25 @@ namespace ClockPlus
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        // 通常モードで再起動する
+        static public bool Restart()
+        {
+            try
+            {
+                ProcessStartInfo proc = new ProcessStartInfo();
+//                proc.UseShellExecute = true;
+                proc.WorkingDirectory = Environment.CurrentDirectory;
+                proc.FileName = System.Windows.Forms.Application.ExecutablePath;
+//                proc.Verb = "runas"; //管理者として実行
+                Process.Start(proc);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         // 管理者モードで再起動する
@@ -250,34 +323,34 @@ namespace ClockPlus
 
         private void Setting_Click(object sender, EventArgs e)
         {
+            Form_Setting_Main.Tab_Page = 1;
             WindowManager.ShowOrActivate<Form_Setting_Main>();
         }
-
         private void Alarm_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_Alarm_List>();
         }
-
         private void Timer_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_Timer_List>();
         }
-
         private void StopWatch_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_StopWatch>();
         }
-
+        private void Weather_Click(object sender, EventArgs e)
+        {
+            WeatherHacks weatherHacks = new WeatherHacks();
+            weatherHacks.Weather_HP();
+        }
         private void Alarm_Stop_Click(object sender, EventArgs e)
         {
-            Sound_Ctrl.Sound_Stop_Req();
+            Task_Ctrl.Sound_Stop_Req();
         }
-
         private void About_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_About>();
         }
-
         private void Close_Click(object sender, EventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
@@ -350,16 +423,8 @@ namespace ClockPlus
                 Task task = new Task();
                 task = XML_Task.Task.TaskList[Task_Ctrl.Now_TaskNo];
 
-                string Type = "";
-                if (task.Type == "Alarm")
-                {
-                    Type = "アラーム\n";
-                }
-                if (task.Type == "Timer")
-                {
-                    Type = "タイマー\n";
-                }
-                Text = Text + Type + task.DateTime + "\n";
+                string Name = task.Name + "\n";
+                Text = Text + Name + task.DateTime + "\n";
 
                 if (task.Power.Enable)
                 {
@@ -367,21 +432,39 @@ namespace ClockPlus
                 }
                 else
                 {
-                    if ((task.Sound.Enable) && (task.App.Enable))
-                    {
-                        Text = Text + "(サウンド・アプリ)";
-                    }
-                    if ((task.Sound.Enable) && (!task.App.Enable))
+                    if (task.Sound.Enable)
                     {
                         Text = Text + "(サウンド)";
                     }
-                    if ((!task.Sound.Enable) && (task.App.Enable))
+                    if (task.Message.Enable)
+                    {
+                        Text = Text + "(メッセージ)";
+                    }
+                    if (task.App.Enable)
                     {
                         Text = Text + "(アプリ)";
                     }
                 }
             }
             return Text;
+        }
+
+        static public void Show_BalloonTip(string Title, string Message, int Time)
+        {
+            /*
+            //バルーンヒントのタイトル
+            notifyIcon.BalloonTipTitle = Title;
+
+            //バルーンヒントに表示するメッセージ
+            notifyIcon.BalloonTipText = Message;
+
+            //バルーンヒントに表示するアイコン
+            notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+
+            //バルーンヒントを表示する
+            //表示する時間をミリ秒で指定する
+            notifyIcon.ShowBalloonTip(Time);
+            */
         }
 
         // 時報処理
@@ -406,7 +489,7 @@ namespace ClockPlus
                                 string FileName = XML_Main.cnf.Signal.FileName;
                                 int Vol = XML_Main.cnf.Signal.Volume;
                                 int DeviceNo = XML_Main.cnf.Signal.Device;
-                                Signal_Ctrl.Sound_Play(FileName, Vol, DeviceNo);
+                                Sound_Play(FileName, Vol, DeviceNo);
                                 return;
                             }
                         }
@@ -445,6 +528,81 @@ namespace ClockPlus
                     break;
             }
             return Flag;
+        }
+
+        private void Sound_Stop()
+        {
+            if (outputDevice != null && outputDevice.PlaybackState == PlaybackState.Playing)
+            {
+                outputDevice.Stop();
+                afr.Close();
+                outputDevice.Dispose();
+            }
+            Sound_Play_Flag = false;
+            Voice_Play_Flag = false;
+        }
+
+        private void Sound_Play(string FileName, int Vol, int DeviceNo)
+        {
+            try
+            {
+                Sound_Stop();
+                outputDevice = new WaveOutEvent();
+                afr = new AudioFileReader(FileName);
+                outputDevice.DeviceNumber = DeviceNo;
+                outputDevice.Init(afr);
+                outputDevice.Volume = (float)(Vol / 100f);
+                outputDevice.Play();
+                outputDevice.PlaybackStopped += Playback_Complete;
+                Sound_Play_Flag = true;
+            }
+            catch (Exception e)
+            {
+                Sound_Play_Flag = false;
+                Voice_Play_Flag = false;
+            }
+        }
+
+        // 再生完了のイベント処理
+        private async void Playback_Complete(object sender, EventArgs e)
+        {
+            outputDevice.Dispose();
+            afr.Dispose();
+
+            if ((XML_Main.cnf.Signal.Voice.Enable) && (!Voice_Play_Flag))
+            {
+                // Voiceの設定が利用可能な状態か
+                if (Voice_Ctrl.Voice_Ready_Check(false))
+                {
+                    // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+                    if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Signal.Voice) == 0)
+                    {
+                        XML_Main.cnf.Signal.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                        XML_Main.cnf.Signal.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+                    }
+                }
+
+                Voice_Setting Setting = new Voice_Setting();
+                Setting = XML_Main.cnf.Signal.Voice;
+                string Text = XML_Message.Msg_Temp["時報"];
+                Text = Voice_Ctrl.Text_Replace(Text, Setting);
+
+                byte[] wav = await Voice_Ctrl.Voice_Gen(Text, Setting);
+                if (wav != null)
+                {
+                    Voice_Play_Flag = true;
+                    outputDevice = new WaveOutEvent();
+                    wfr = new WaveFileReader(new MemoryStream(wav));
+                    outputDevice.DeviceNumber = Setting.Query.Device;
+                    outputDevice.Init(wfr);
+                    outputDevice.Volume = (float)(100 / 100f);
+                    outputDevice.Play();
+                    outputDevice.PlaybackStopped += Playback_Complete;
+                    return;
+                }
+            }
+            Sound_Play_Flag = false;
+            Voice_Play_Flag = false;
         }
     }
 }

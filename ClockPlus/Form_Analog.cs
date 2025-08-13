@@ -42,13 +42,14 @@ namespace ClockPlus
             ContextMenu.Items[3].Click += Timer_Click;
             ContextMenu.Items[4].Click += StopWatch_Click;
             ContextMenu.Items[6].Click += Alarm_Stop_Click;
-            ContextMenu.Items[8].Click += About_Click;
+            ContextMenu.Items[8].Click += Weather_Click;
+            ContextMenu.Items[10].Click += About_Click;
 
             ToolStripMenuItem Menu_Close = new ToolStripMenuItem();
             Menu_Close.Text = "閉じる";
-            ContextMenu.Items.RemoveAt(10);
+            ContextMenu.Items.RemoveAt(12);
             ContextMenu.Items.Add(Menu_Close);
-            ContextMenu.Items[10].Click += Close_Click;
+            ContextMenu.Items[12].Click += Close_Click;
             this.ContextMenuStrip = ContextMenu;
 
             // フォーム非表示
@@ -109,9 +110,9 @@ namespace ClockPlus
         {
             if ((e.Button == MouseButtons.Left) && (e.Clicks == 2))
             {
-                if (Sound_Ctrl.Sound_Play_Flag)
+                if (Task_Ctrl.Sound_Play_Flag)
                 {
-                    Sound_Ctrl.Sound_Stop_Req();
+                    Task_Ctrl.Sound_Stop_Req();
                 }
                 else
                 {
@@ -125,34 +126,34 @@ namespace ClockPlus
 
         private void Setting_Click(object sender, EventArgs e)
         {
+            Form_Setting_Main.Tab_Page = 2;
             WindowManager.ShowOrActivate<Form_Setting_Main>();
         }
-
         private void Alarm_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_Alarm_List>();
         }
-
         private void Timer_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_Timer_List>();
         }
-
         private void StopWatch_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_StopWatch>();
         }
-
+        private void Weather_Click(object sender, EventArgs e)
+        {
+            WeatherHacks weatherHacks = new WeatherHacks();
+            weatherHacks.Weather_HP();
+        }
         private void Alarm_Stop_Click(object sender, EventArgs e)
         {
-            Sound_Ctrl.Sound_Stop_Req();
+            Task_Ctrl.Sound_Stop_Req();
         }
-
         private void About_Click(object sender, EventArgs e)
         {
             WindowManager.ShowOrActivate<Form_About>();
         }
-
         private void Close_Click(object sender, EventArgs e)
         {
             XML_Main.cnf.Display.Analog.Enable = false;

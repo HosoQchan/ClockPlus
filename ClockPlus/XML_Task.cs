@@ -27,6 +27,7 @@ namespace ClockPlus
         public string Hour { get; set; } = "";
         public string Min { get; set; } = "";
         public string Alarm { get; set; } = "";
+        public string Balloon { get; set; } = "";
         public string App { get; set; } = "";
         public string Power { get; set; } = "";
 
@@ -75,6 +76,8 @@ namespace ClockPlus
         public Task_Sound Sound { get; set; } = new Task_Sound();
         [XmlElement("App")]
         public Task_Program App { get; set; } = new Task_Program();
+        [XmlElement("Message")]
+        public Task_Message Message { get; set; } = new Task_Message();
         [XmlElement("Power")]
         public Task_Power Power { get; set; } = new Task_Power();
     }
@@ -99,7 +102,7 @@ namespace ClockPlus
         public bool Sun { get; set; } = false;
     }
 
-    // 音声設定
+    // サウンド設定
     [XmlRoot("Task_Sound")]
     public class Task_Sound
     {
@@ -127,6 +130,20 @@ namespace ClockPlus
         public string FileName { get; set; } = "";
         [XmlElement("Option")]
         public string Option { get; set; } = "";
+    }
+
+    // メッセージ設定 
+    [XmlRoot("Task_Message")]
+    public class Task_Message
+    {
+        [XmlElement("Enable")]
+        public bool Enable { get; set; } = true;
+        [XmlElement("Timer")]
+        public int Timer { get; set; } = 30;     // 30s
+        [XmlElement("Message_No")]
+        public int Message_No { get; set; } = 0;
+        [XmlElement("Voice")]
+        public Voice_Setting Voice { get; set; } = new Voice_Setting();
     }
 
     // 電源制御 
@@ -213,6 +230,23 @@ namespace ClockPlus
                 }
             }
             return Flag;
+        }
+
+        // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+        static public void Voice_Setting_Check()
+        {
+            for (int i = 0; i < Task.TaskList.Count; i++)
+            {
+                Task task = new Task();
+                task = Task.TaskList[i];
+                Voice_Setting setting = new Voice_Setting();
+                setting = task.Message.Voice;
+                if (Voice_Ctrl.Speaker_Check(setting) == 0)
+                {
+                    Task.TaskList[i].Message.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                    Task.TaskList[i].Message.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+                }
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
         xmlns:local="clr-namespace:ClockPlus"
         x:Class="ClockPlus.Form_Edit_Alarm"
         x:Name="Edit_Alarm"
-        Title="アラーム設定" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowInTaskbar="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Icon="./Resources/icon/Alarm.ico" Width="460" Height="315.33" ResizeMode="NoResize">
+        Title="アラーム設定" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Icon="./Resources/icon/Alarm.ico" Width="460" Height="308.67" ResizeMode="NoResize">
 
     <metro:MetroWindow.TitleTemplate>
         <DataTemplate>
@@ -159,25 +159,26 @@
                     <TextBlock TextWrapping="Wrap" Text="分" FontSize="18" FontFamily="Meiryo UI" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
-            <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}" Header="実行する内容" Grid.Row="3" Margin="1,1,1,1" FontSize="14" Height="100" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
+            <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}" Header="実行する内容" Grid.Row="3" Margin="1,1,1,1" FontSize="14" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
                 <Grid ShowGridLines="True">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Grid HorizontalAlignment="Right">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="サウンド再生" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <metro:ToggleSwitch x:Name="ToggleSwitch_Alarm" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Alarm_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_Alarm" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Alarm_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1" ToolTip="指定されたサウンドが再生されます"/>
                         </Grid>
                         <Button x:Name="Alarm_Setting_Button" ToolTip="サウンド設定を開きます" FontFamily="Meiryo UI" Click="Alarm_Setting_Button_Click" Margin="2,2,2,2" Height="30" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" FontSize="11" Grid.Row="1" HorizontalAlignment="Center">
                             <Image x:Name="Image_Alarm" Source="./Resources/icon/Music.ico"/>
@@ -185,33 +186,50 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Grid HorizontalAlignment="Right">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60"/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap" Text="メッセージ" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_Balloon" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Balloon_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1" ToolTip="メッセージを表示します"/>
+                        </Grid>
+                        <Button x:Name="Balloon_Setting_Button" ToolTip="メッセージの設定を開きます" FontFamily="Meiryo UI" Click="Balloon_Setting_Button_Click" Margin="2,2,2,2" Height="30" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" FontSize="11" Grid.Row="1" HorizontalAlignment="Center">
+                            <Image x:Name="Image_Balloon" Source="./Resources/icon/Message.ico"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="アプリの起動" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <metro:ToggleSwitch x:Name="ToggleSwitch_App" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_App_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_App" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_App_Toggled" Margin="2,2,2,2" FontSize="11" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Column="1" ToolTip="設定されたアプリやコマンド等が実行されます"/>
                         </Grid>
                         <Button x:Name="App_Setting_Button" ToolTip="アプリの起動設定を開きます" FontFamily="Meiryo UI" Click="App_Setting_Button_Click" Margin="2,2,2,2" Height="30" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" FontSize="11" Grid.Row="1" HorizontalAlignment="Center">
                             <Image x:Name="Image_App" Source="./Resources/icon/OpenApp.ico"/>
                         </Button>
                     </Grid>
-                    <Grid Grid.Column="2">
+                    <Grid Grid.Column="3">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Grid HorizontalAlignment="Right">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="電源制御" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            <metro:ToggleSwitch x:Name="ToggleSwitch_Power" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Power_Toggled" Margin="2,2,2,2" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" FontSize="11" OffContent="" OnContent="" HorizontalAlignment="Left" Grid.Column="1"/>
+                            <metro:ToggleSwitch x:Name="ToggleSwitch_Power" VerticalAlignment="Top" FontFamily="Meiryo UI" Toggled="ToggleSwitch_Power_Toggled" Margin="2,2,2,2" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" FontSize="11" OffContent="" OnContent="" HorizontalAlignment="Left" Grid.Column="1" ToolTip="電源制御が有効な場合、その他の内容は無効になります"/>
                         </Grid>
                         <ComboBox x:Name="ComboBox_Power" SelectionChanged="ComboBox_Power_SelectionChanged" Height="30" FontFamily="Meiryo UI" FontSize="11" Margin="4,1,1,1" Grid.Row="1"/>
                     </Grid>

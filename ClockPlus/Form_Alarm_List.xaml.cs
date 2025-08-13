@@ -82,6 +82,10 @@ namespace ClockPlus
                         {
                             _task_item.Alarm = "サウンド再生";
                         }
+                        if (task.Message.Enable)
+                        {
+                            _task_item.Balloon = "メッセージ";
+                        }
                         if (task.App.Enable)
                         {
                             _task_item.App = "アプリの起動";
@@ -178,7 +182,7 @@ namespace ClockPlus
             }
             else
             {
-                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。");
+                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。", 0);
             }
             Read_Data();
         }
@@ -193,7 +197,7 @@ namespace ClockPlus
             }
             else
             {
-                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。");
+                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。", 0);
             }
             Read_Data();
         }
@@ -202,7 +206,7 @@ namespace ClockPlus
         {
             if (Alarm_List.Count >= Max_count)
             {
-                FormCtrl_Wpf.Info_Message("登録できる件数(" + Max_count.ToString() + "件まで)を超えています。");
+                FormCtrl_Wpf.Info_Message("登録できる件数(" + Max_count.ToString() + "件まで)を超えています。", 0);
                 return;
             }
             Form_Edit_Alarm.Edit_No = -1;
@@ -256,7 +260,7 @@ namespace ClockPlus
                             {
                                 if (Tgt_dtime <= Now_dtime)
                                 {
-                                    FormCtrl_Wpf.Info_Message("過去又は現在の日時を有効にすることは出来ません。");
+                                    FormCtrl_Wpf.Info_Message("過去又は現在の日時を有効にすることは出来ません。", 0);
                                     // 無効にします。
                                     task_data[list.IndexOf(data)].Enable = false;
                                     Read_Data();

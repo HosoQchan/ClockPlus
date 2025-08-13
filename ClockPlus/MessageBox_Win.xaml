@@ -12,7 +12,7 @@
         xmlns:local="clr-namespace:ClockPlus"
         x:Class="ClockPlus.MessageBox_Ex"
         x:Name="MessageBox"
-        Title="" WindowStartupLocation="CenterScreen" ShowTitleBar="true" Icon="./Resources/icon/ClockPlus.ico" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowInTaskbar="false" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Height="136" Width="412.67" ResizeMode="NoResize">
+        Title="" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" Icon="./Resources/icon/ClockPlus.ico" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Width="380" Height="160" ResizeMode="NoResize">
 
     <metro:MetroWindow.TitleTemplate>
         <DataTemplate>
@@ -22,7 +22,7 @@
     
     <Grid VerticalAlignment="Bottom">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid>
@@ -37,7 +37,7 @@
                         <materialDesignMahApps:TransitionEffect Kind="FadeIn" />
                         <materialDesignMahApps:TransitionEffect Kind="SlideInFromBottom" />
                     </materialDesignMahApps:TransitioningContent.OpeningEffects>
-                    <TextBlock x:Name="txtMessage" HorizontalAlignment="Center" FontSize="14" FontFamily="Meiryo UI" VerticalAlignment="Center" Text=""/>
+                    <TextBlock x:Name="txtMessage" FontSize="11" FontFamily="Meiryo UI" Text="" TextWrapping="Wrap" Width="300" Height="70" Margin="0,10,10,0" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                 </materialDesignMahApps:TransitioningContent>
             </Grid>
         </Grid>

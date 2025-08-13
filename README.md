@@ -17,6 +17,8 @@
 
 ・アラーム・タイマー・ストップウォッチ機能。 
 
+・音声合成アプリ(AivisSpeech又はVoiceBox)による通知機能。※別途インストールが必要。 
+
 ・Windows起動時に実行(スタートアップに登録)。 
 
 ・テーマ(色の設定)機能。 
@@ -37,7 +39,11 @@
 # インストール方法  
 最新のClockPlus.zipを、 https://mobidrive.com/sharelink/z/2JnYjGYUEhFlQ5QEUwKeZA4nFCGUBB6Me3NTZVjwVkBE からダウンロードし、
 ClockPlus.zipを適当な場所に解凍して下さい。  
-解凍してできたClockPlusディレクトリ下の"ClockPlus.exe"をダブルクリックで起動出来ます。  
+解凍してできたClockPlusディレクトリ下の"ClockPlus.exe"をダブルクリックで起動出来ます。
+ 
+又、音声合成による通知機能を利用する為には、下記アプリの何れかがインストールされている必要があります。
+・AivisSpeech "https://aivis-project.com" 
+・VoiceBox "https://voicevox.hiroshiba.jp" 
 
 # 使い方 
 基本的な操作としては、時計をD&Dで移動、右クリックの「設定」で各種設定、「閉じる」で時計を非表示化出来ます。

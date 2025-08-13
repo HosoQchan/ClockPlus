@@ -59,10 +59,12 @@ namespace ClockPlus
 
                         break;
                     case "再起動":
-                        Task_Ctrl.Win_Reboot();
+                        App.Power_Mode = 3;
+                        System.Windows.Application.Current.Shutdown();
                         break;
                     case "シャットダウン":
-                        Task_Ctrl.Win_PowerOff();
+                        App.Power_Mode = 4;
+                        System.Windows.Application.Current.Shutdown();
                         break;
                 }
             }

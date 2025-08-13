@@ -95,6 +95,10 @@ namespace ClockPlus
                         {
                             _task_item.Alarm = "サウンド再生";
                         }
+                        if (task.Message.Enable)
+                        {
+                            _task_item.Balloon = "メッセージ";
+                        }
                         if (task.App.Enable)
                         {
                             _task_item.App = "アプリの起動";
@@ -150,7 +154,7 @@ namespace ClockPlus
             }
             else
             {
-                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。");
+                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。", 0);
             }
         }
 
@@ -169,7 +173,7 @@ namespace ClockPlus
             }
             else
             {
-                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。");
+                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。", 0);
             }
         }
 
@@ -184,7 +188,7 @@ namespace ClockPlus
             }
             else
             {
-                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。");
+                FormCtrl_Wpf.Info_Message("アイテムが選択されていません。", 0);
             }
         }
 
@@ -192,7 +196,7 @@ namespace ClockPlus
         {
             if(Timer_List.Count >= Max_count)
             {
-                FormCtrl_Wpf.Info_Message("登録できる件数(" + Max_count.ToString() + "件まで)を超えています。");
+                FormCtrl_Wpf.Info_Message("登録できる件数(" + Max_count.ToString() + "件まで)を超えています。", 0);
                 return;
             }
             Form_Edit_Timer.Edit_No = -1;

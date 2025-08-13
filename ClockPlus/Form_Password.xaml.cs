@@ -50,10 +50,10 @@ namespace ClockPlus
         {
             if (TextBox_Password.Text != Word)
             {
-                FormCtrl_Wpf.Info_Message("パスワードが正しくありません。");
+                FormCtrl_Wpf.Info_Message("パスワードが正しくありません。", 0);
                 return;
             }
-            Sound_Ctrl.Sound_Stop();
+            Task_Ctrl.Sound_Stop();
             this.Close();
         }
 

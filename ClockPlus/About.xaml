@@ -12,7 +12,7 @@
         xmlns:local="clr-namespace:ClockPlus"
         x:Class="ClockPlus.Form_About"
         x:Name="About"
-        Title="About" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowInTaskbar="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" Icon="./Resources/icon/ClockPlus.ico" Width="358.67" Height="238.87" ResizeMode="NoResize">
+        Title="About" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" Icon="./Resources/icon/ClockPlus.ico" Width="358.67" Height="238.87" ResizeMode="NoResize">
 
     <metro:MetroWindow.TitleTemplate>
         <DataTemplate>

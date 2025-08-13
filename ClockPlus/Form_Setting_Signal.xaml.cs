@@ -10,10 +10,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ClockPlus
 {
@@ -26,12 +28,14 @@ namespace ClockPlus
 
         private WaveOutEvent outputDevice = new WaveOutEvent();
         private AudioFileReader afr;
+        private WaveFileReader wfr;
         private bool Sound_Play_Flag = false;
+        private bool Voice_Play_Flag = false;
 
         public Form_Setting_Signal()
         {
             InitializeComponent();
-            List<string> Device_List = Sound_Ctrl.Get_Device_List();
+            List<string> Device_List = Task_Ctrl.Get_Device_List();
             foreach (string Device in Device_List)
             {
                 ComboBox_Device.Items.Add(Device);
@@ -42,6 +46,8 @@ namespace ClockPlus
             ComboBox_Cycle.Items.Add("30");
             ComboBox_Cycle.Items.Add("60");
             ComboBox_Cycle.SelectedIndex = 0;
+
+            ToggleSwich_Voice.IsOn = false;
         }
 
         private void Form_Loaded(object sender, RoutedEventArgs e)
@@ -53,6 +59,8 @@ namespace ClockPlus
             Slider_Volume.Value = XML_Main.cnf.Signal.Volume;
             TextBlock_Volume.Text = Slider_Volume.Value.ToString();
 
+            ToggleSwich_Voice.IsOn = XML_Main.cnf.Signal.Voice.Enable;
+            Voice_Visibility();
             Form_Loaded_Flag = true;
         }
 
@@ -66,6 +74,28 @@ namespace ClockPlus
             }
         }
 
+        private void Voice_Visibility()
+        {
+            if (Voice_Engine.Process_Step == Voice_Engine.Proc_step.None)
+            {
+                Grid_Voice.Visibility = Visibility.Hidden;      // 非表示にする(コンポーネントの場所はそのまま)
+                TextBlock_Voice.Text = "音声Engineが起動されていません。";
+            }
+            else
+            {
+                Grid_Voice.Visibility = Visibility.Visible;     // 表示する
+                TextBlock_Voice.Text = "サウンド再生後、時刻を音声で知らせる";
+                if (ToggleSwich_Voice.IsOn == true)
+                {
+                    Button_Voice.Visibility = Visibility.Visible;       // 表示する
+                }
+                else
+                {
+                    Button_Voice.Visibility = Visibility.Hidden;        // 非表示にする(コンポーネントの場所はそのまま)
+                }
+            }
+        }
+
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -76,6 +106,7 @@ namespace ClockPlus
             XML_Main.cnf.Signal.Device = ComboBox_Device.SelectedIndex;
             XML_Main.cnf.Signal.Cycle = int.Parse(ComboBox_Cycle.Text);
             XML_Main.cnf.Signal.Volume = (int)Slider_Volume.Value;
+            XML_Main.cnf.Signal.Voice.Enable = ToggleSwich_Voice.IsOn;
             this.Close();
         }
 
@@ -97,8 +128,72 @@ namespace ClockPlus
             }
         }
 
+        private void ToggleSwich_Voice_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Form_Loaded_Flag)
+            {
+                if (ToggleSwich_Voice.IsOn)
+                {
+                    // Voiceの設定が利用可能な状態か
+                    if (Voice_Ctrl.Voice_Ready_Check(true))
+                    {
+                        // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+                        if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Signal.Voice) == 0)
+                        {
+                            XML_Main.cnf.Signal.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                            XML_Main.cnf.Signal.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+                        }
+                    }
+                    else
+                    {
+                        Form_Loaded_Flag = false;
+                        ToggleSwich_Voice.IsOn = false;
+                        Form_Loaded_Flag = true;
+                    }
+                }
+                Voice_Visibility();
+            }
+        }
+
+        private void Button_Voice_Click(object sender, RoutedEventArgs e)
+        {
+            // Voiceの設定が利用可能な状態か
+            if (!Voice_Ctrl.Voice_Ready_Check(true))
+            {
+                return;
+            }
+
+            // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+            if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Signal.Voice) == 0)
+            {
+                XML_Main.cnf.Signal.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                XML_Main.cnf.Signal.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+            }
+
+            Form_Edit_Voice Form = new Form_Edit_Voice();
+            Form.Voice = XML_Main.cnf.Signal.Voice;
+            Form.ShowDialog();
+            XML_Main.cnf.Signal.Voice = Form.Voice;
+        }
+
         private void Button_Play_Click(object sender, RoutedEventArgs e)
         {
+            if ((ToggleSwich_Voice.IsOn) && (Button_Voice.Visibility == Visibility.Visible))
+            {
+                // Voiceの設定が利用可能な状態か
+                if (!Voice_Ctrl.Voice_Ready_Check(true))
+                {
+                    return;
+                }
+            }
+
+            // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+            if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Signal.Voice) == 0)
+            {
+                XML_Main.cnf.Signal.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                XML_Main.cnf.Signal.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+            }
+
             string FileName = XML_Main.cnf.Signal.FileName;
             int Vol = (int)Slider_Volume.Value;
             int DeviceNo = ComboBox_Device.SelectedIndex;
@@ -120,12 +215,16 @@ namespace ClockPlus
                 ComboBox_Device.IsEnabled = true;
                 ComboBox_Cycle.IsEnabled = true;
                 Slider_Volume.IsEnabled = true;
+                ToggleSwich_Voice.IsEnabled = true;
+                Button_Voice.IsEnabled = true;
             }
             else
             {
                 ComboBox_Device.IsEnabled = false;
                 ComboBox_Cycle.IsEnabled = false;
                 Slider_Volume.IsEnabled = false;
+                ToggleSwich_Voice.IsEnabled = false;
+                Button_Voice.IsEnabled = false;
             }
         }
 
@@ -135,9 +234,11 @@ namespace ClockPlus
             {
                 outputDevice.Stop();
                 afr.Close();
+                wfr.Close();
                 outputDevice.Dispose();
             }
             Sound_Play_Flag = false;
+            Voice_Play_Flag = false;
             Image_Button_Play.Source = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icon/Play.ico"));
             Visibility_Change(true);
         }
@@ -161,16 +262,45 @@ namespace ClockPlus
             {
                 Visibility_Change(true);
                 Sound_Play_Flag = false;
+                Voice_Play_Flag = false;
             }
         }
 
         // 再生完了のイベント処理
-        private void Playback_Complete(object sender, EventArgs e)
+        private async void Playback_Complete(object sender, EventArgs e)
         {
             outputDevice.Dispose();
-            afr.Dispose();
+            if (afr != null)
+            {
+                afr.Dispose();
+            }
+            if (wfr != null)
+            {
+                wfr.Dispose();
+            }
+            if ((ToggleSwich_Voice.IsOn) && (!Voice_Play_Flag))
+            {
+                Voice_Setting Setting = new Voice_Setting();
+                Setting = XML_Main.cnf.Signal.Voice;
+                string Text = XML_Message.Msg_Temp["時報"];
+                Text = Voice_Ctrl.Text_Replace(Text, Setting);
 
+                byte[] wav = await Voice_Ctrl.Voice_Gen(Text, Setting);
+                if (wav != null)
+                {
+                    Voice_Play_Flag = true;
+                    outputDevice = new WaveOutEvent();
+                    wfr = new WaveFileReader(new MemoryStream(wav));
+                    outputDevice.DeviceNumber = Setting.Query.Device;
+                    outputDevice.Init(wfr);
+                    outputDevice.Volume = (float)(100 / 100f);
+                    outputDevice.Play();
+                    outputDevice.PlaybackStopped += Playback_Complete;
+                    return;
+                }
+            }
             Sound_Play_Flag = false;
+            Voice_Play_Flag = false;
             Image_Button_Play.Source = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icon/Play.ico"));
             Visibility_Change(true);
         }

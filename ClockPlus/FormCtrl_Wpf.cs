@@ -62,21 +62,21 @@ namespace ClockPlus
         }
 
         // メッセージを表示する
-        static public void Info_Message(string Text)
+        static public void Info_Message(string Text,int Timer)
         {
-            var Result = new MessageBox_Ex(Text, MessageBox_Ex.MessageType.Info, MessageBox_Ex.MessageButtons.Ok).ShowDialog();
+            var Result = new MessageBox_Ex(Text, Timer,MessageBox_Ex.MessageType.Info, MessageBox_Ex.MessageButtons.Ok).ShowDialog();
         }
 
         // エラーメッセージを表示する
         static public void Error_Message(string Text)
         {
-            var Result = new MessageBox_Ex(Text, MessageBox_Ex.MessageType.Error, MessageBox_Ex.MessageButtons.Ok).ShowDialog();
+            var Result = new MessageBox_Ex(Text, 0,MessageBox_Ex.MessageType.Error, MessageBox_Ex.MessageButtons.Ok).ShowDialog();
         }
 
         // 確認メッセージを表示する
         static public bool YesNo_Message(string Text)
         {
-            bool Result = (bool)new MessageBox_Ex(Text, MessageBox_Ex.MessageType.Confirmation, MessageBox_Ex.MessageButtons.YesNo).ShowDialog();
+            bool Result = (bool)new MessageBox_Ex(Text, 0,MessageBox_Ex.MessageType.Confirmation, MessageBox_Ex.MessageButtons.YesNo).ShowDialog();
             return Result;
         }
     }

@@ -7,6 +7,10 @@ using System.Windows.Input;
 using static ClockPlus.Theme_Ctrl;
 using IWshRuntimeLibrary;
 using Microsoft.Win32;
+using VoicevoxClientSharp.ApiClient.Models;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Forms;
+using NAudio.Wave;
 
 namespace ClockPlus
 {
@@ -15,6 +19,8 @@ namespace ClockPlus
     /// </summary>
     public partial class Form_Setting_Main : MetroWindow
     {
+        static public int Tab_Page = 1;
+
         private string Theme_Mode;
         private string Theme_Color;
 
@@ -23,11 +29,38 @@ namespace ClockPlus
         public Form_Setting_Main()
         {
             InitializeComponent();
-            ComboBox_Gen();
+            Grid_VoicePath.Visibility = Visibility.Hidden;           // 非表示にする(コンポーネントの場所はそのまま)
+
+            ComboBox_Theme_Gen();
+            ComboBox_VoiceEngine_Gen();
+
+            ComboBox_Weather_Pref();
+            ComboBox_Weather_Area("東京都");
+
+            switch (Tab_Page)
+            {
+                case 2:
+                    TabItem_Display.IsSelected = true;
+                    break;
+                default:
+                    TabItem_Main.IsSelected = true;
+                    break;
+            }
+
+
+            /// test ///
+
+
+            /*
+            WeatherHacks weatherHacks = new WeatherHacks();
+            weatherHacks.Get_Weather("100010");
+            */
+            /// test ///
+
         }
 
         // テーマカラーの一覧を取得
-        private void ComboBox_Gen()
+        private void ComboBox_Theme_Gen()
         {
             List<MyColor> lists = new List<MyColor>();
             lists.Clear();
@@ -41,6 +74,94 @@ namespace ClockPlus
             // 最後の色"Yellow"については、テーマによって見づらくなるので外す
             lists.RemoveAt(lists.Count - 1);
             ComboBox_Color.DataContext = lists;
+        }
+
+        // Voice Engineの一覧を取得
+        private void ComboBox_VoiceEngine_Gen()
+        {
+            ComboBox_Engine.Items.Clear();
+            foreach (string Name in Voice_Engine.Engine_DefaultPath.Keys)
+            {
+                ComboBox_Engine.Items.Add(Name);
+            }
+            ComboBox_Engine.SelectedIndex = 0;
+        }
+
+        // 天気予報(都道府県一覧)を作成
+        private void ComboBox_Weather_Pref()
+        {
+            Window_Loading = false;
+            ComboBox_Pref.Items.Clear();
+            string pref = "";
+            for (int i = 0; i < WeatherHacks.AreaCode.Length; i++)
+            {
+                if (pref != WeatherHacks.AreaCode[i][1])
+                {
+                    pref = WeatherHacks.AreaCode[i][1];
+                    ComboBox_Pref.Items.Add(pref);
+                }
+            }
+            // 初期値(東京都)
+            ComboBox_Pref.SelectedIndex = 18;
+            Window_Loading = true;
+        }
+
+        // 指定された都道府県の地域一覧を作成
+        private void ComboBox_Weather_Area(string Pref)
+        {
+            Window_Loading = false;
+            ComboBox_Area.Items.Clear();
+            for (int i = 0; i < WeatherHacks.AreaCode.Length; i++)
+            {
+                if (Pref == WeatherHacks.AreaCode[i][1])
+                {
+                    ComboBox_Area.Items.Add(WeatherHacks.AreaCode[i][2]);
+                }
+            }
+            ComboBox_Area.SelectedIndex = 0;
+            Window_Loading = true;
+        }
+
+        // 指定された都道府県と地域から、AreaCodeを取得する
+        private string Weather_AreaCode_Get(string pref,string area)
+        {
+            string AreaCode = "";
+            for (int i = 0; i < WeatherHacks.AreaCode.Length; i++)
+            {
+                if ((pref == WeatherHacks.AreaCode[i][1]) && (area == WeatherHacks.AreaCode[i][2]))
+                {
+                    AreaCode = WeatherHacks.AreaCode[i][0];
+                    break;
+                }
+            }
+            return AreaCode;
+        }
+
+        private void Read_Setting_Weather()
+        {
+            Window_Loading = false;
+            string pref = "";
+            string area = "";
+            for (int i = 0; i < WeatherHacks.AreaCode.Length; i++)
+            {
+                if (WeatherHacks.AreaCode[i][0] == XML_Main.cnf.Weather.AreaCode)
+                {
+                    pref = WeatherHacks.AreaCode[i][1];
+                    area = WeatherHacks.AreaCode[i][2];
+                    break;
+                }
+            }
+            ComboBox_Pref.Text = pref;
+            ComboBox_Pref.SelectedIndex = FormCtrl_Wpf.ComBox_Index_Get(ComboBox_Pref);
+
+            ComboBox_Weather_Area(pref);
+            ComboBox_Area.Text = area;
+            ComboBox_Area.SelectedIndex = FormCtrl_Wpf.ComBox_Index_Get(ComboBox_Area);
+
+            Window_Loading = false;
+            ToggleSwich_Voice.IsOn = XML_Main.cnf.Weather.Voice.Enable;
+            Voice_Visibility();
+            Window_Loading = true;
         }
 
         private void Read_Setting_Theme()
@@ -71,6 +192,29 @@ namespace ClockPlus
             ComboBox_Color.SelectedIndex = ComboBox_Color_Index_Get();
             Window_Loading = true;
         }
+
+        private void Read_Setting_Voice()
+        {
+            Window_Loading = false;
+            ComboBox_Engine.Text = XML_Main.cnf.VoiceEngine.Engine_Name;
+            ComboBox_Engine.SelectedIndex = FormCtrl_Wpf.ComBox_Index_Get(ComboBox_Engine);
+            TextBox_EnginePath.Text = XML_Main.cnf.VoiceEngine.Path;
+            Voice_Path_Visibility();
+            Window_Loading = true;
+        }
+
+        private void Voice_Path_Visibility()
+        {
+            if (ComboBox_Engine.SelectedItem.ToString() == "無し")
+            {
+                Grid_VoicePath.Visibility = Visibility.Hidden;      // 非表示にする(コンポーネントの場所はそのまま)
+            }
+            else
+            {
+                Grid_VoicePath.Visibility = Visibility.Visible;     // 表示する
+            }
+        }
+
         private int ComboBox_Color_Index_Get()
         {
             int Index = -1;
@@ -90,6 +234,8 @@ namespace ClockPlus
         private void Form_Loaded(object sender, RoutedEventArgs e)
         {
             Read_Setting_Theme();
+            Read_Setting_Voice();
+            Read_Setting_Weather();
             Read_Setting();
             Visibility_Change();
             Window_Loading = true;
@@ -136,6 +282,31 @@ namespace ClockPlus
         private void Form_Closed(object sender, EventArgs e)
         {
             XML_Main.cnf.Password = TextBox_Password.Text;
+
+            // 音声Engineが変更された場合
+            string Engine_Name = ComboBox_Engine.SelectedItem.ToString();
+            /*
+            if ((Engine_Name != XML_Main.cnf.VoiceEngine.Engine_Name) || (TextBox_EnginePath.Text != XML_Main.cnf.VoiceEngine.Path))
+            {
+                if (Engine_Name == "無し")
+                {
+                    XML_Main.cnf.VoiceEngine.Engine_Name = Engine_Name;
+                    XML_Main.cnf.VoiceEngine.Path = TextBox_EnginePath.Text;
+                }
+                else
+                {
+                    if (FormCtrl_Wpf.YesNo_Message("音声Engineの設定が変更されました。\r\n再起動してよろしいですか？\r\n[はい] -> 再起動     [いいえ] -> 元の状態を保つ"))
+                    {
+                        XML_Main.cnf.VoiceEngine.Engine_Name = Engine_Name;
+                        XML_Main.cnf.VoiceEngine.Path = TextBox_EnginePath.Text;
+                        App.Power_Mode = 1;
+                        System.Windows.Application.Current.Shutdown();
+                    }
+                }
+            }
+            */
+            XML_Main.cnf.VoiceEngine.Engine_Name = Engine_Name;
+            XML_Main.cnf.VoiceEngine.Path = TextBox_EnginePath.Text;
         }
 
         private void RadioButton_Theme_Click(object sender, RoutedEventArgs e)
@@ -243,7 +414,7 @@ namespace ClockPlus
                         
                         if (FormCtrl_Wpf.YesNo_Message("管理者権限で実行する必要があります。\r\n管理者権限で再起動しますか？"))
                         {
-                            App.Admin_Restart = true;
+                            App.Power_Mode = 2;
                             System.Windows.Application.Current.Shutdown();
                             this.Close();
                         }
@@ -278,7 +449,7 @@ namespace ClockPlus
                         
                         if (FormCtrl_Wpf.YesNo_Message("管理者権限で実行する必要があります。\r\n管理者権限で再起動しますか？"))
                         {
-                            App.Admin_Restart = true;
+                            App.Power_Mode = 2;
                             System.Windows.Application.Current.Shutdown();
                             this.Close();
                         }
@@ -401,6 +572,153 @@ namespace ClockPlus
                     e.Handled = true;
                 }
             }
+        }
+
+        private void ComboBox_Engine_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Window_Loading)
+            {
+                string Name = ComboBox_Engine.SelectedItem.ToString();
+                TextBox_EnginePath.Text = Voice_Engine.Engine_DefaultPath[Name];
+                Voice_Path_Visibility();
+            }
+        }
+
+        private void Button_FolderSelect_Click(object sender, RoutedEventArgs e)
+        {
+            string FilePath = Etc.Dlg_Folder_Select(TextBox_EnginePath.Text);
+            if (FilePath != "")
+            {
+                string FileName = FilePath + "\\run.exe";
+                if (!System.IO.File.Exists(FileName))
+                {
+                    FormCtrl_Wpf.Error_Message("音声Engine本体(run.exe)が見つかりません。");
+                    return;
+                }
+                TextBox_EnginePath.Text = FilePath;
+            }
+        }
+
+        private void ComboBox_Pref_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Window_Loading)
+            {
+                string pref = ComboBox_Pref.SelectedItem.ToString();
+                if (pref != null)
+                {
+                    ComboBox_Weather_Area(pref);
+                    Area_Change();
+                }
+            }
+        }
+
+        private void ComboBox_Area_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Window_Loading)
+            {
+                Area_Change();
+            }
+        }
+
+        // 予報エリアの設定が変更された時の処理
+        private void Area_Change()
+        {
+            string area = ComboBox_Area.SelectedItem.ToString();
+            string pref = ComboBox_Pref.SelectedItem.ToString();
+            string AreaCode = Weather_AreaCode_Get(pref, area);
+
+            XML_Main.cnf.Weather.AreaCode = AreaCode;
+            XML_Main.cnf.Weather.Acquisition = DateTime.MinValue;
+        }
+
+        private void Button_Voice_Click(object sender, RoutedEventArgs e)
+        {
+            // Voiceの設定が利用可能な状態か
+            if (!Voice_Ctrl.Voice_Ready_Check(true))
+            {
+                return;
+            }
+
+            // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+            if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Weather.Voice) == 0)
+            {
+                XML_Main.cnf.Weather.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                XML_Main.cnf.Weather.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+            }
+
+            Form_Edit_Voice Form = new Form_Edit_Voice();
+            Form.Voice = XML_Main.cnf.Weather.Voice;
+            Form.ShowDialog();
+            XML_Main.cnf.Weather.Voice = Form.Voice;
+        }
+
+        private void ToggleSwich_Voice_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Window_Loading)
+            {
+                if (ToggleSwich_Voice.IsOn)
+                {
+                    // Voiceの設定が利用可能な状態か
+                    if (Voice_Ctrl.Voice_Ready_Check(true))
+                    {
+                        // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+                        if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Weather.Voice) == 0)
+                        {
+                            XML_Main.cnf.Weather.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                            XML_Main.cnf.Weather.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+                        }
+                    }
+                    else
+                    {
+                        Window_Loading = false;
+                        ToggleSwich_Voice.IsOn = false;
+                        Window_Loading = true;
+                    }
+                }
+                XML_Main.cnf.Weather.Voice.Enable = ToggleSwich_Voice.IsOn;
+                Voice_Visibility();
+            }
+        }
+
+        private void Voice_Visibility()
+        {
+            if (Voice_Engine.Process_Step == Voice_Engine.Proc_step.None)
+            {
+                Grid_Voice.Visibility = Visibility.Hidden;      // 非表示にする(コンポーネントの場所はそのまま)
+                TextBlock_Voice.Text = "音声Engineが起動されていません。";
+            }
+            else
+            {
+                Grid_Voice.Visibility = Visibility.Visible;     // 表示する
+                TextBlock_Voice.Text = "予報を音声で知らせる";
+                if (ToggleSwich_Voice.IsOn == true)
+                {
+                    Button_Voice.Visibility = Visibility.Visible;       // 表示する
+                }
+                else
+                {
+                    Button_Voice.Visibility = Visibility.Hidden;        // 非表示にする(コンポーネントの場所はそのまま)
+                }
+            }
+        }
+
+        private void Button_Weather_Click(object sender, RoutedEventArgs e)
+        {
+            if (XML_Main.cnf.Weather.Voice.Enable)
+            {
+                // Voiceの設定が利用可能な状態か
+                if (Voice_Ctrl.Voice_Ready_Check(true))
+                {
+                    // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+                    if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Weather.Voice) == 0)
+                    {
+                        XML_Main.cnf.Weather.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                        XML_Main.cnf.Weather.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+                    }
+                }
+            }
+            WeatherHacks weatherHacks = new WeatherHacks();
+            weatherHacks.Weather_HP();
         }
     }
 }

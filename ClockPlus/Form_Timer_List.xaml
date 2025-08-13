@@ -82,7 +82,8 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock x:Name="TextBlock_Alarm" TextWrapping="Wrap" Text="{Binding Alarm}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="TextBlock_App" TextWrapping="Wrap" Text="{Binding App}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"/>
+                                        <TextBlock x:Name="TextBlock_Balloon" TextWrapping="Wrap" Text="{Binding Balloon}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"/>
+                                        <TextBlock x:Name="TextBlock_App" TextWrapping="Wrap" Text="{Binding App}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
                                     </Grid>
                                     <Grid x:Name="Grid_Power" Visibility="{Binding Grid_Power}" ShowGridLines="True" Grid.Row="1">
                                         <TextBlock x:Name="TextBlock_Power" TextWrapping="Wrap" Text="{Binding Power}" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"/>
