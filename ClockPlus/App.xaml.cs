@@ -43,6 +43,8 @@ namespace ClockPlus
         static public Form_Analog form_analog = new Form_Analog();
         static public Form_Digital1 form_digital1 = new Form_Digital1();
         static public Form_Digital2 form_digital2 = new Form_Digital2();
+        static public Form_Weather1 form_weather1 = new Form_Weather1();
+        static public Form_Weather2 form_weather2 = new Form_Weather2();
 
         private string jsFile = null;           // スクリプトファイル名
 
@@ -138,6 +140,10 @@ namespace ClockPlus
             form_digital1.Show();
             form_digital2.Show();
 
+            // 天気予報表示
+            form_weather1.Show();
+            form_weather2.Show();
+
             /*
             form_analog.tooltip.InitialDelay = 1000;    // ToolTipが表示されるまでの時間(ms)
             form_analog.tooltip.ReshowDelay = 250;      // ToolTipが表示されている時に、別のToolTipを表示するまでの時間(ms)
@@ -225,10 +231,10 @@ namespace ClockPlus
             Menu_StopWatch.Text = "ストップウォッチ";
 
             ToolStripMenuItem Menu_Alarm_Stop = new ToolStripMenuItem();
-            Menu_Alarm_Stop.Text = "アラームの解除";
+            Menu_Alarm_Stop.Text = "サウンド・音声を停止する";
 
             ToolStripMenuItem Menu_Weather = new ToolStripMenuItem();
-            Menu_Weather.Text = "天気予報(気象庁)のサイトを表示";
+            Menu_Weather.Text = "天気予報(気象庁)のサイトを開く";
 
             ToolStripMenuItem Menu_About = new ToolStripMenuItem();
             Menu_About.Text = "About";
@@ -323,7 +329,7 @@ namespace ClockPlus
 
         private void Setting_Click(object sender, EventArgs e)
         {
-            Form_Setting_Main.Tab_Page = 1;
+            Form_Setting_Main.Tab_Page = "基本";
             WindowManager.ShowOrActivate<Form_Setting_Main>();
         }
         private void Alarm_Click(object sender, EventArgs e)
@@ -403,6 +409,25 @@ namespace ClockPlus
                     FormCtrl_Net.Hide_Form(form_digital2);      // フォームを非表示
                 }
 
+                if (XML_Main.cnf.Weather.Weather_Disp[0].Enable)
+                {
+                    FormCtrl_Net.valid_Form(form_weather1);     // フォームを表示
+                    form_weather1.Weather_Disp1_Drow();
+                }
+                else
+                {
+                    FormCtrl_Net.Hide_Form(form_weather1);      // フォームを非表示
+                }
+
+                if (XML_Main.cnf.Weather.Weather_Disp[1].Enable)
+                {
+                    FormCtrl_Net.valid_Form(form_weather2);     // フォームを表示
+                    form_weather2.Weather_Disp2_Drow();
+                }
+                else
+                {
+                    FormCtrl_Net.Hide_Form(form_weather2);      // フォームを非表示
+                }
             }
 
             // 時報処理
@@ -411,8 +436,6 @@ namespace ClockPlus
             // タスク処理
             task_ctrl.Task_Process();
         }
-
-        
 
         // タスクトレイ表示
         static public string Notify_disp()

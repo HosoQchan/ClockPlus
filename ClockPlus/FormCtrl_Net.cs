@@ -14,6 +14,7 @@ namespace ClockPlus
         // フォームを非表示にする
         static public void Hide_Form(Form form)
         {
+            form.WindowState = FormWindowState.Minimized;
             form.Visible = false;
         }
         // フォームを表示する

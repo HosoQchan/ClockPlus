@@ -65,7 +65,6 @@ namespace ClockPlus
 
             PicBox_Disp.MouseDown += PicBox_Disp_MouseDown;
             PicBox_Disp.MouseMove += PicBox_Disp_MouseMove;
-            PicBox_Disp.MouseDoubleClick += PicBox_Disp_MouseDoubleClick;
 
             if (Digital_Drow.Digital_Disp_Check(Dno))
             {
@@ -78,7 +77,6 @@ namespace ClockPlus
         {
             PicBox_Disp.MouseDown -= PicBox_Disp_MouseDown;
             PicBox_Disp.MouseMove -= PicBox_Disp_MouseMove;
-            PicBox_Disp.MouseDoubleClick -= PicBox_Disp_MouseDoubleClick;
         }
         private void PicBox_Disp_MouseDown(object sender, MouseEventArgs e)
         {
@@ -102,27 +100,10 @@ namespace ClockPlus
                 XML_Main.cnf.Display.Digtal[Dno].PosY = point.Y;
             }
         }
-        private void PicBox_Disp_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if ((e.Button == MouseButtons.Left) && (e.Clicks == 2))
-            {
-                if (Task_Ctrl.Sound_Play_Flag)
-                {
-                    Task_Ctrl.Sound_Stop_Req();
-                }
-                else
-                {
-                    /*
-                    Form_Menu Form = new Form_Menu();
-                    Form.ShowDialog();
-                    */
-                }
-            }
-        }
-
+        
         private void Setting_Click(object sender, EventArgs e)
         {
-            Form_Setting_Main.Tab_Page = 2;
+            Form_Setting_Main.Tab_Page = "時計";
             WindowManager.ShowOrActivate<Form_Setting_Main>();
         }
         private void Alarm_Click(object sender, EventArgs e)

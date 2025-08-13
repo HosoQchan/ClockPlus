@@ -11,8 +11,8 @@
 	  <ApplicationManifest>app.manifest</ApplicationManifest>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ApplicationIcon>Resources\icon\ClockPlus.ico</ApplicationIcon>
-	  <AssemblyVersion>3.0.0.0</AssemblyVersion>
-	  <FileVersion>3.0.0.0</FileVersion>
+	  <AssemblyVersion>3.1.0.0</AssemblyVersion>
+	  <FileVersion>3.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -53,6 +53,7 @@
     <None Remove="Resources\icon\StopWatch.ico" />
     <None Remove="Resources\icon\Timer.ico" />
     <None Remove="Resources\icon\Voice.ico" />
+    <None Remove="Resources\icon\Weather.ico" />
     <None Remove="skin\Alarm\Clock_Face.png" />
     <None Remove="skin\Alarm\Clock_Hand_Hours.png" />
     <None Remove="skin\Alarm\Clock_Hand_Min.png" />
@@ -164,6 +165,7 @@
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Svg" Version="3.4.7" />
     <PackageReference Include="System.Management" Version="8.0.0" />
     <PackageReference Include="TaskScheduler" Version="2.12.2" />
     <PackageReference Include="VoicevoxClientSharp" Version="1.0.1" />
@@ -203,9 +205,16 @@
     <Resource Include="Resources\icon\StopWatch.ico" />
     <Resource Include="Resources\icon\Timer.ico" />
     <Resource Include="Resources\icon\Voice.ico" />
+    <Resource Include="Resources\icon\Weather.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Form_Weather2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Form_Weather_Backup.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

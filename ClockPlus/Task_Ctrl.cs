@@ -492,6 +492,9 @@ namespace ClockPlus
         // サウンド再生の停止、またはパスワード入力画面に移行する処理
         static public void Sound_Stop_Req()
         {
+            // 天気予報(気象庁)HPの音声再生を停止する
+            WeatherHacks.Voice_Stop();
+
             if (!task.Sound.Password_Enable)
             {
                 Sound_Stop();

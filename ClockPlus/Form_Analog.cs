@@ -68,7 +68,6 @@ namespace ClockPlus
 
             Pbox_Sec.MouseDown += PBox_Sec_MouseDown;
             Pbox_Sec.MouseMove += PBox_Sec_MouseMove;
-            Pbox_Sec.MouseDoubleClick += PBox_Sec_MouseDoubleClick;
 
             Analog_Disp_init();                     // アナログ時計を表示
             if (Analog_Disp_Check())
@@ -82,7 +81,6 @@ namespace ClockPlus
         {
             Pbox_Sec.MouseDown -= PBox_Sec_MouseDown;
             Pbox_Sec.MouseMove -= PBox_Sec_MouseMove;
-            Pbox_Sec.MouseDoubleClick -= PBox_Sec_MouseDoubleClick;
         }
         private void PBox_Sec_MouseDown(object sender, MouseEventArgs e)
         {
@@ -106,27 +104,10 @@ namespace ClockPlus
                 XML_Main.cnf.Display.Analog.PosY = point.Y;
             }
         }
-        private void PBox_Sec_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if ((e.Button == MouseButtons.Left) && (e.Clicks == 2))
-            {
-                if (Task_Ctrl.Sound_Play_Flag)
-                {
-                    Task_Ctrl.Sound_Stop_Req();
-                }
-                else
-                {
-                    /*
-                    Form_Menu Form = new Form_Menu();
-                    Form.ShowDialog();
-                    */
-                }
-            }
-        }
 
         private void Setting_Click(object sender, EventArgs e)
         {
-            Form_Setting_Main.Tab_Page = 2;
+            Form_Setting_Main.Tab_Page = "時計";
             WindowManager.ShowOrActivate<Form_Setting_Main>();
         }
         private void Alarm_Click(object sender, EventArgs e)

@@ -19,7 +19,7 @@ namespace ClockPlus
     /// </summary>
     public partial class Form_Setting_Main : MetroWindow
     {
-        static public int Tab_Page = 1;
+        static public string Tab_Page = "基本";
 
         private string Theme_Mode;
         private string Theme_Color;
@@ -39,24 +39,19 @@ namespace ClockPlus
 
             switch (Tab_Page)
             {
-                case 2:
+                case "音声":
+                    TabItem_Voice.IsSelected = true;
+                    break;
+                case "時計":
                     TabItem_Display.IsSelected = true;
+                    break;
+                case "天気":
+                    TabItem_Weather.IsSelected = true;
                     break;
                 default:
                     TabItem_Main.IsSelected = true;
                     break;
             }
-
-
-            /// test ///
-
-
-            /*
-            WeatherHacks weatherHacks = new WeatherHacks();
-            weatherHacks.Get_Weather("100010");
-            */
-            /// test ///
-
         }
 
         // テーマカラーの一覧を取得
@@ -249,6 +244,8 @@ namespace ClockPlus
             ToggleSwich_Analog.IsOn = XML_Main.cnf.Display.Analog.Enable;
             ToggleSwich_Digital1.IsOn = XML_Main.cnf.Display.Digtal[0].Enable;
             ToggleSwich_Digital2.IsOn = XML_Main.cnf.Display.Digtal[1].Enable;
+            ToggleSwich_Weather1.IsOn = XML_Main.cnf.Weather.Weather_Disp[0].Enable;
+            ToggleSwich_Weather2.IsOn = XML_Main.cnf.Weather.Weather_Disp[1].Enable;
             TextBox_Password.Text = XML_Main.cnf.Password;
             Window_Loading = true;
         }
@@ -260,6 +257,8 @@ namespace ClockPlus
             Button_Alalog_Setting.Visibility = Visibility.Hidden;       // 非表示にする(コンポーネントの場所はそのまま)
             Button_Digital1_Setting.Visibility = Visibility.Hidden;     // 非表示にする(コンポーネントの場所はそのまま)
             Button_Digital2_Setting.Visibility = Visibility.Hidden;     // 非表示にする(コンポーネントの場所はそのまま)
+            Button_Weather1_Setting.Visibility = Visibility.Hidden;     // 非表示にする(コンポーネントの場所はそのまま)
+            Button_Weather2_Setting.Visibility = Visibility.Hidden;     // 非表示にする(コンポーネントの場所はそのまま)
 
             if (ToggleSwich_Signal.IsOn)
             {
@@ -276,6 +275,14 @@ namespace ClockPlus
             if (ToggleSwich_Digital2.IsOn)
             {
                 Button_Digital2_Setting.Visibility = Visibility.Visible;    // 表示する
+            }
+            if (ToggleSwich_Weather1.IsOn)
+            {
+                Button_Weather1_Setting.Visibility = Visibility.Visible;    // 表示する
+            }
+            if (ToggleSwich_Weather2.IsOn)
+            {
+                Button_Weather2_Setting.Visibility = Visibility.Visible;    // 表示する
             }
         }
 
@@ -369,14 +376,24 @@ namespace ClockPlus
         private void Button_Digital1_Setting_Click(object sender, RoutedEventArgs e)
         {
             Form_Setting_Digital Form = new Form_Setting_Digital(0);
-//            Form.Setting_Dno = 0;
             Form.ShowDialog();
         }
 
         private void Button_Digital2_Setting_Click(object sender, RoutedEventArgs e)
         {
             Form_Setting_Digital Form = new Form_Setting_Digital(1);
-//            Form.Setting_Dno = 1;
+            Form.ShowDialog();
+        }
+
+        private void Button_Weather1_Setting_Click(object sender, RoutedEventArgs e)
+        {
+            Form_Setting_Weather Form = new Form_Setting_Weather(0);
+            Form.ShowDialog();
+        }
+
+        private void Button_Weather2_Setting_Click(object sender, RoutedEventArgs e)
+        {
+            Form_Setting_Weather Form = new Form_Setting_Weather(1);
             Form.ShowDialog();
         }
 
@@ -548,6 +565,24 @@ namespace ClockPlus
             {
                 Visibility_Change();
                 XML_Main.cnf.Display.Digtal[1].Enable = ToggleSwich_Digital2.IsOn;
+            }
+        }
+
+        private void ToggleSwich_Weather1_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Window_Loading)
+            {
+                Visibility_Change();
+                XML_Main.cnf.Weather.Weather_Disp[0].Enable = ToggleSwich_Weather1.IsOn;
+            }
+        }
+
+        private void ToggleSwich_Weather2_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Window_Loading)
+            {
+                Visibility_Change();
+                XML_Main.cnf.Weather.Weather_Disp[1].Enable = ToggleSwich_Weather2.IsOn;
             }
         }
 

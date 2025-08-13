@@ -18,6 +18,8 @@ using System.Security.Principal;
 using System.IO;
 using System.Security;
 using static ClockPlus.Date_Picker;
+using Svg;
+using System.Net;
 
 namespace ClockPlus
 {
@@ -280,6 +282,46 @@ namespace ClockPlus
             [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool DeleteObject([In] IntPtr hObject);
+        }
+
+        // 指定されたUrlのSvg画像を取得してBitmapとして返す
+        static public Bitmap ConvertSvgToBitmap(string svgUrl, int width, int height)
+        {
+            //描画する画像
+            Bitmap bitmap = new Bitmap(width, height);
+            Graphics g = Graphics.FromImage(bitmap);
+
+            try
+            {
+                // WebRequestを作成
+                WebRequest request = WebRequest.Create(svgUrl);
+                // レスポンスを取得
+                WebResponse response = request.GetResponse();
+                // ストリームを取得
+                Stream responseStream = response.GetResponseStream();
+
+                // SvgDocumentをロード
+                SvgDocument svgDocument = SvgDocument.Open<SvgDocument>(responseStream, new SvgOptions());
+
+                // ストリームとレスポンスを閉じる
+                responseStream.Close();
+                response.Close();
+
+                // Fillカラーを設定
+                svgDocument.Fill = new SvgColourServer();
+
+                //サイズを指定して描画
+                bitmap = svgDocument.Draw(bitmap.Width, bitmap.Height);
+
+                //目的のグラフィックに描画
+                g.DrawImage(bitmap, 0, 0);
+                g.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"エラーが発生しました: {ex.Message}");
+            }
+            return bitmap;
         }
     }
 }

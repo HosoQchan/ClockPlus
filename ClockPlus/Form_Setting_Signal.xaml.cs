@@ -178,22 +178,6 @@ namespace ClockPlus
 
         private void Button_Play_Click(object sender, RoutedEventArgs e)
         {
-            if ((ToggleSwich_Voice.IsOn) && (Button_Voice.Visibility == Visibility.Visible))
-            {
-                // Voiceの設定が利用可能な状態か
-                if (!Voice_Ctrl.Voice_Ready_Check(true))
-                {
-                    return;
-                }
-            }
-
-            // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
-            if (Voice_Ctrl.Speaker_Check(XML_Main.cnf.Signal.Voice) == 0)
-            {
-                XML_Main.cnf.Signal.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
-                XML_Main.cnf.Signal.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
-            }
-
             string FileName = XML_Main.cnf.Signal.FileName;
             int Vol = (int)Slider_Volume.Value;
             int DeviceNo = ComboBox_Device.SelectedIndex;

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using static System.Net.Mime.MediaTypeNames;
 using Application = System.Windows.Application;
 
@@ -49,6 +52,27 @@ namespace ClockPlus
                 form.TransparencyKey = form.BackColor;
                 form.FormBorderStyle = FormBorderStyle.None;
             }
+        }
+        // Gridのコントロールの内容をキャプチャ(Visible = false でも可能)
+        static public System.Drawing.Bitmap ToBitmap(Grid grid)
+        {
+            System.Drawing.Bitmap bitmap = null;
+
+            // BitmapSourceの派生クラス「RenderTargetBitmap」で、画像を取ってくる
+            var canvas = new RenderTargetBitmap((int)grid.ActualWidth, (int)grid.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            canvas.Render(grid);
+
+            // BmpBitmapEncoderに画像を入れる
+            using (var stream = new MemoryStream())
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(canvas));
+                encoder.Save(stream);
+
+                // BmpBitmapEncoderからSystem.Drawing.Bitmapをつくる
+                bitmap = new System.Drawing.Bitmap(stream);
+            }
+            return bitmap;
         }
         // ファイルが存在するか
         static public bool File_Check(System.Windows.Window form, string FileName)

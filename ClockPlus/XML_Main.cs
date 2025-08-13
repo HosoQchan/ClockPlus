@@ -49,10 +49,37 @@ namespace ClockPlus
         public string AreaCode { get; set; }
         [XmlElement("Acquisition")]
         public DateTime Acquisition { get; set; }
-        [XmlElement("Acquisition_Flg")]
-        public bool Acquisition_Flg { get; set; }
         [XmlElement("Voice")]
         public Voice_Setting Voice { get; set; }
+        [XmlElement("Weather_Disp")]
+        public List<Weather_Disp> Weather_Disp { get; set; }
+    }
+
+    [XmlRoot("Weather_Disp")]
+    public class Weather_Disp
+    {
+        [XmlElement("Enable")]
+        public bool Enable { get; set; }
+        [XmlElement("Font_Color")]
+        public string Font_Color { get; set; }
+        [XmlElement("Font_Color1")]
+        public string Font_Color1 { get; set; }
+        [XmlElement("Font_Color2")]
+        public string Font_Color2 { get; set; }
+        [XmlElement("Back_Color")]
+        public string Back_Color { get; set; }
+        [XmlElement("Clear_Background")]
+        public bool Clear_Background { get; set; }
+        [XmlElement("PosX")]
+        public int PosX { get; set; }
+        [XmlElement("PosY")]
+        public int PosY { get; set; }
+        [XmlElement("Opacity")]
+        public double Opacity { get; set; }
+        [XmlElement("Zoom")]
+        public double Zoom { get; set; }
+        [XmlElement("TopMost")]
+        public bool TopMost { get; set; }
     }
 
     [XmlRoot("Signal")]
@@ -206,6 +233,17 @@ namespace ClockPlus
             {
                 XML_Main_Initialize();  // 設定の初期化
             }
+
+            // スタートアップフォルダに登録済みか確認
+            if (File.Exists(App.LnkFile))
+            {
+                cnf.AutoStart = true;
+            }
+            else
+            {
+                cnf.AutoStart = false;
+
+            }
         }
 
         public void XML_Main_save()
@@ -241,14 +279,16 @@ namespace ClockPlus
                 return;
             }
 
-            // 設定値が範囲外だった時は初期化する
-            if (cnf.AutoStart)
+            // 天気予報の表示位置が範囲内かの確認
+            if ((cnf.Weather.Weather_Disp[0].PosX > Display_Width) || (cnf.Weather.Weather_Disp[0].PosY > Display_Height))
             {
-                // スタートアップフォルダに登録済みか確認
-                if (!File.Exists(App.LnkFile))
-                {
-                    cnf.AutoStart = false;
-                }
+                cnf.Weather.Weather_Disp[0].PosX = XML_Main.Display_Width / 2;
+                cnf.Weather.Weather_Disp[0].PosY = XML_Main.Display_Height / 2;
+            }
+            if ((cnf.Weather.Weather_Disp[1].PosX > Display_Width) || (cnf.Weather.Weather_Disp[0].PosY > Display_Height))
+            {
+                cnf.Weather.Weather_Disp[1].PosX = XML_Main.Display_Width / 2;
+                cnf.Weather.Weather_Disp[1].PosY = XML_Main.Display_Height / 2;
             }
 
             // 時計の表示位置が範囲内かの確認
@@ -263,7 +303,6 @@ namespace ClockPlus
                 cnf.Display.Digtal[0].PosX = XML_Main.Display_Width / 2;
                 cnf.Display.Digtal[0].PosY = XML_Main.Display_Height / 2;
             }
-
             if ((cnf.Display.Digtal[1].PosX > Display_Width) || (cnf.Display.Digtal[1].PosY > Display_Height))
             {
                 cnf.Display.Digtal[1].PosX = XML_Main.Display_Width / 2;
@@ -286,8 +325,16 @@ namespace ClockPlus
             weather.Enable = false;
             weather.AreaCode = "130010";
             weather.Acquisition = DateTime.MinValue;
-            weather.Acquisition_Flg = false;
             weather.Voice = new Voice_Setting();
+            Weather_Disp weather_Disp1 = new Weather_Disp();
+            weather_Disp1 = XML_Display_Weather_Initialize();
+            Weather_Disp weather_Disp2 = new Weather_Disp();
+            weather_Disp2 = XML_Display_Weather_Initialize();
+            weather_Disp2.Enable = false;
+            weather.Weather_Disp = new List<Weather_Disp>();
+            weather.Weather_Disp.Clear();
+            weather.Weather_Disp.Add(weather_Disp1);
+            weather.Weather_Disp.Add(weather_Disp2);
             XML_Main.cnf.Weather = weather;
 
             Signal signal = new Signal();
@@ -312,6 +359,7 @@ namespace ClockPlus
             analog = XML_Display_Analog_Initialize();
             digital1 = XML_Display_Digital_Initialize(0);
             digital2 = XML_Display_Digital_Initialize(1);
+            digital2.Enable = false;
 
             display.Analog = analog;
             display.Digtal = new List<Digital>();
@@ -330,7 +378,7 @@ namespace ClockPlus
             analog.PosX = XML_Main.Display_Width / 2;
             analog.PosY = XML_Main.Display_Height / 2;
             analog.Opacity = 1.0;
-            analog.Zoom = 0.5;
+            analog.Zoom = 0.4;
             analog.Clear_Background = true;
             analog.Display_Event = false;
             analog.TopMost = false;
@@ -380,6 +428,22 @@ namespace ClockPlus
                 digital.Format = "HH:mm:ss";
             }
             return digital;
+        }
+        static public Weather_Disp XML_Display_Weather_Initialize()
+        {
+            Weather_Disp disp = new Weather_Disp();
+            disp.Enable = true;
+            disp.Font_Color = Etc.RGB_Code(Color.White);
+            disp.Font_Color1 = Etc.RGB_Code(Color.DeepPink);
+            disp.Font_Color2 = Etc.RGB_Code(Color.DodgerBlue);
+            disp.Back_Color = Etc.RGB_Code(Color.Black);
+            disp.Clear_Background = true;
+            disp.PosX = XML_Main.Display_Width / 2;
+            disp.PosY = XML_Main.Display_Height / 2;
+            disp.Opacity = 1.0;
+            disp.Zoom = 1.0;
+            disp.TopMost = false;
+            return disp;
         }
 
         // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理

@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using ExCSS;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using static System.Net.WebRequestMethods;
+using static System.Windows.Forms.LinkLabel;
 
 namespace ClockPlus
 {
@@ -21,9 +23,9 @@ namespace ClockPlus
         private const string url = "https://weather.tsukumijima.net/api/forecast/city/";
         private const int Access_Wait = 1;      // URLアクセス制限時間(1時間)
 
-        public WaveOutEvent outputDevice;
-        public WaveFileReader wfr;
-        public bool Voice_Play_Flag = false;
+        static public WaveOutEvent outputDevice;
+        static public WaveFileReader wfr;
+        static public bool Voice_Play_Flag = false;
 
         static public string[][] AreaCode =
         {
@@ -180,45 +182,48 @@ namespace ClockPlus
 
         public class Tenki
         {
-            public DateTime publicTime { get; set; }
-            public string publicTime_format { get; set; }
-            public string title { get; set; }
-            public string link { get; set; }
+            public DateTime publicTime { get; set; }            // 予報の発表日時（ ISO8601 形式 / 例・2020-09-01T05:00:00+09:00 ）
+            public string publicTime_format { get; set; }       // 予報の発表日時（例・2020/09/01 05:00:00 ）
+            public string title { get; set; }                   // タイトル・見出し（例・福岡県 久留米 の天気）
+            public string link { get; set; }                    // リクエストされたデータの地域に該当する気象庁 HP の天気予報の URL
             public Description description { get; set; }
             public Forecast[] forecasts { get; set; }
             public Location location { get; set; }
             public Copyright copyright { get; set; }
         }
 
+        // 天気概況文
         public class Description
         {
-            public string text { get; set; }
-            public DateTime publicTime { get; set; }
-            public string publicTime_format { get; set; }
+            public string text { get; set; }                    // 天気概況文
+            public DateTime publicTime { get; set; }            // 天気概況文の発表時刻（ ISO8601 形式 / 例・2020-09-01T04:52:00+09:00 ）
+            public string publicTime_format { get; set; }       // 天気概況文の発表時刻（例・2020/09/01 04:52:00 ）
         }
 
+        // 予報を発表した地域を定義
         public class Location
         {
-            public string city { get; set; }
-            public string area { get; set; }
-            public string prefecture { get; set; }
+            public string city { get; set; }                    // 地域名（気象観測所名）（例・八幡）
+            public string area { get; set; }                    // 地方名（例・九州）
+            public string prefecture { get; set; }              // 都道府県名（例・福岡県）
         }
 
+        // 内容
         public class Copyright
         {
-            public string link { get; set; }
-            public string title { get; set; }
-            public Image image { get; set; }
-            public Provider[] provider { get; set; }
+            public string link { get; set; }                    // 天気予報 API（livedoor 天気互換）の URL
+            public string title { get; set; }                   // コピーライトの文言
+            public Image image { get; set; }                    // 天気予報 API（livedoor 天気互換）のアイコン
+            public Provider[] provider { get; set; }            // 天気予報 API（livedoor 天気互換）で使用している気象データの配信元（気象庁）
         }
 
         public class Image
         {
-            public int width { get; set; }
-            public int height { get; set; }
+            public int width { get; set; }                      // 天気アイコンの幅
+            public int height { get; set; }                     // 天気アイコンの高さ
             public string link { get; set; }
-            public string url { get; set; }
-            public string title { get; set; }
+            public string url { get; set; }                     // 天気アイコンの URL（SVG 画像）
+            public string title { get; set; }                   // 天気（晴れ、曇り、雨など）
         }
 
         public class Provider
@@ -228,34 +233,39 @@ namespace ClockPlus
             public string note { get; set; }
         }
 
+        // 都道府県天気予報の予報日毎の配列
         public class Forecast
         {
-            public string date { get; set; }
-            public string dateLabel { get; set; }
-            public string telop { get; set; }
-            public Temperature temperature { get; set; }
-            public Chanceofrain chanceOfRain { get; set; }
-            public Image1 image { get; set; }
+            public string date { get; set; }                    // 予報日
+            public string dateLabel { get; set; }               // 予報日（今日・明日・明後日のいずれか）
+            public string telop { get; set; }                   // 天気（晴れ、曇り、雨など）
+            public Temperature temperature { get; set; }        // 気温
+            public Chanceofrain chanceOfRain { get; set; }      // 降水確率
+            public Image1 image { get; set; }                   // 天気アイコン
         }
 
+        // 気温
         public class Temperature
         {
             public Min min { get; set; }
-            public Max max { get; set; }
+            public Max max { get; set; }                        
         }
 
+        // 最低気温
         public class Min
         {
-            public string celsius { get; set; }
-            public string fahrenheit { get; set; }
+            public string celsius { get; set; }                 // 摂氏 (°C)
+            public string fahrenheit { get; set; }              // 華氏 (°F)
         }
 
+        // 最高気温
         public class Max
         {
-            public string celsius { get; set; }
-            public string fahrenheit { get; set; }
+            public string celsius { get; set; }                 // 摂氏 (°C)
+            public string fahrenheit { get; set; }              // 華氏 (°F)
         }
 
+        // 降水確率
         public class Chanceofrain
         {
             public string _0006 { get; set; }
@@ -270,10 +280,10 @@ namespace ClockPlus
 
         public class Image1
         {
-            public string title { get; set; }
-            public string url { get; set; }
-            public int width { get; set; }
-            public int height { get; set; }
+            public string title { get; set; }                   // 天気（晴れ、曇り、雨など）
+            public string url { get; set; }                     // 天気アイコンの URL（SVG 画像）
+            public int width { get; set; }                      // 天気アイコンの幅
+            public int height { get; set; }                     // 天気アイコンの高さ
         }
         static public Tenki? tenki = null;
 //        static public bool Read_Flag = false;
@@ -366,14 +376,31 @@ namespace ClockPlus
             return data;
         }
 
-        // 天気予報(気象庁)のHPを開く
+        // 天気予報(気象庁)HPを開く
         public async void Weather_HP()
         {
+            // 指定されたcityCodeの天気予報データを取得する
+            Get_Weather(XML_Main.cnf.Weather.AreaCode);
+
             try
             {
-                string URL = $"https://www.data.jma.go.jp/multi/yoho/yoho_detail.html?code={XML_Main.cnf.Weather.AreaCode}&lang=jp";
-                Form_About.Link_Display(URL);
+                if (tenki != null)
+                {
+                    Form_About.Link_Display(tenki.link);
+                }
+                else
+                {
+                    string URL = $"https://www.data.jma.go.jp/multi/yoho/yoho_detail.html?code={XML_Main.cnf.Weather.AreaCode}&lang=jp";
+                    Form_About.Link_Display(URL);
+                }
+            }
+            catch
+            {
+                FormCtrl_Wpf.Error_Message("リンクが開けませんでした。");
+            }
 
+            try
+            {
                 if (Voice_Play_Flag)
                 {
                     Voice_Stop();
@@ -412,11 +439,11 @@ namespace ClockPlus
             }
             catch
             {
-                FormCtrl_Wpf.Error_Message("リンクが開けませんでした。");
+
             }
         }
 
-        public void Voice_Stop()
+        static public void Voice_Stop()
         {
             if (outputDevice != null && outputDevice.PlaybackState == PlaybackState.Playing)
             {

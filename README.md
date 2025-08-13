@@ -37,7 +37,7 @@
 ・.NET8.0以上
   
 # インストール方法  
-最新のClockPlus.zipを、 https://mobidrive.com/sharelink/z/2JnYjGYUEhFlQ5QEUwKeZA5MxuepcPtsGVwDJ4n1gEeV からダウンロードし、
+最新のClockPlus.zipを、 https://mobidrive.com/sharelink/z/2JnYjGYUEhFlQ5QEUwKeZA746IRQ7gMHDTXc7yjgoDdd からダウンロードし、
 ClockPlus.zipを適当な場所に解凍して下さい。  
 解凍してできたClockPlusディレクトリ下の"ClockPlus.exe"をダブルクリックで起動出来ます。
  
