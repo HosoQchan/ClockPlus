@@ -1,6 +1,8 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reflection.Metadata;
@@ -8,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static ClockPlus.Date_Picker;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace ClockPlus
 {
@@ -31,7 +34,7 @@ namespace ClockPlus
         static public int Now_TaskNo = -1;
         static public bool Task_Run_Flg = false;
         static public bool Task_Comp_Flg = false;
-        private Task task = new Task();
+        static public Task task = new Task();
 
         // スリープ制御
         private delegate void TimerSetDelegate();
@@ -46,7 +49,15 @@ namespace ClockPlus
         static extern bool CancelWaitableTimer(IntPtr hTimer);
         private IntPtr handle;
 
+        // サウンド制御
+        static public WaveOutEvent outputDevice;
+        static public AudioFileReader afr;
+        static public WaveFileReader wfr;
+        static public System.Windows.Forms.Timer SoundRepeat_Timer = new System.Windows.Forms.Timer();
 
+        static public bool Sound_Play_Flag = false;
+        static public bool Voice_Play_Flag = false;
+        
         // 電源制御
         static public bool Forced_Flag = false;
 
@@ -155,18 +166,51 @@ namespace ClockPlus
             }
             else
             {
-                // 音声
+                // Voiceの設定が利用可能な状態か
+                if (Voice_Ctrl.Voice_Ready_Check(false))
+                {
+                    // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+                    if (Voice_Ctrl.Speaker_Check(task.Message.Voice) == 0)
+                    {
+                        task.Message.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                        task.Message.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+                        XML_Task.Task.TaskList[Now_TaskNo].Message.Voice.Style.Name = task.Message.Voice.Style.Name;
+                        XML_Task.Task.TaskList[Now_TaskNo].Message.Voice.Style.Type = task.Message.Voice.Style.Type;
+                    }
+                }
+
+                // サウンド
                 if (task.Sound.Enable)
                 {
                     // 既にアラーム再生中などで、再生途中の場合は何もしない
-                    if (!Sound_Ctrl.Sound_Play_Flag)
+                    if (!Sound_Play_Flag)
                     {
-                        Sound_Ctrl.Repeat = task.Sound.Repeat;
-                        Sound_Ctrl.Password_Enable = task.Sound.Password_Enable;
-                        Sound_Ctrl.Password = XML_Main.cnf.Password;
-                        Sound_Ctrl.Sound_Play(task.Sound.FileName, task.Sound.Volume, task.Sound.Device);
+                        Sound_Play(task.Sound.FileName, task.Sound.Volume, task.Sound.Device);
                     }
                 }
+                // メッセージ
+                if (task.Message.Enable)
+                {
+                    int index = task.Message.Message_No;
+                    string Title = XML_Message.Message_List[index].Name;
+                    string Text = XML_Message.Message_List[index].Text;
+
+                    Voice_Setting voice_Setting = new Voice_Setting();
+                    voice_Setting = task.Message.Voice;
+
+                    // 特殊文字を含んだメッセージを変換する
+                    Text = Voice_Ctrl.Text_Replace(Text, voice_Setting);
+
+                    App.Show_BalloonTip(Title, Text, task.Message.Timer * 1000);
+                    FormCtrl_Wpf.Info_Message(Text, task.Message.Timer);
+
+                    // 音声の再生が有効で、サウンド再生が無効な場合は、ここで音声の再生を行う
+                    if ((task.Message.Voice.Enable) && (!task.Sound.Enable))
+                    {
+                        Voice_Play();
+                    }                   
+                }
+
                 // アプリ
                 if (task.App.Enable)
                 {
@@ -430,6 +474,131 @@ namespace ClockPlus
             thread.Start();
             // スレッドの終了を待つ
             thread.Join();
+        }
+
+        // サウンドの出力デバイス名を取得
+        static public List<string> Get_Device_List()
+        {
+            List<string> Device_List = new List<string>();
+            Device_List.Clear();
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                var capabilities = WaveOut.GetCapabilities(i);
+                Device_List.Add(capabilities.ProductName);
+            }
+            return Device_List;
+        }
+
+        // サウンド再生の停止、またはパスワード入力画面に移行する処理
+        static public void Sound_Stop_Req()
+        {
+            if (!task.Sound.Password_Enable)
+            {
+                Sound_Stop();
+            }
+            else
+            {
+                // パスワード入力画面へ
+                Form_Password Form = new Form_Password(XML_Main.cnf.Password);
+                Form.ShowDialog();
+            }
+        }
+
+        // サウンド再生を停止する
+        static public void Sound_Stop()
+        {
+            SoundRepeat_Timer.Stop();
+            if (outputDevice != null && outputDevice.PlaybackState == PlaybackState.Playing)
+            {
+                outputDevice.Stop();
+                afr.Close();
+                wfr.Close();
+                outputDevice.Dispose();
+            }
+            Sound_Play_Flag = false;
+            Voice_Play_Flag = false;
+        }
+
+        static public void Sound_Play(string FileName, int Vol, int DeviceNo)
+        {
+            try
+            {
+                Sound_Stop();
+                outputDevice = new WaveOutEvent();
+                afr = new AudioFileReader(FileName);
+                outputDevice.DeviceNumber = DeviceNo;
+                outputDevice.Init(afr);
+                outputDevice.Volume = (float)(Vol / 100f);
+                outputDevice.Play();
+                outputDevice.PlaybackStopped += Playback_Complete;
+                Sound_Play_Flag = true;
+
+                // 繰り返し？
+                if (task.Sound.Repeat != 0)
+                {
+                    SoundRepeat_Timer.Interval = task.Sound.Repeat * 1000;
+                    SoundRepeat_Timer.Tick += SoundRepeat_Timer_Tick;
+                    SoundRepeat_Timer.Start();
+                }
+            }
+            catch (Exception e)
+            {
+                Sound_Play_Flag = false;
+                Voice_Play_Flag = false;
+            }
+        }
+
+        // 再生完了のイベント処理
+        static public void Playback_Complete(object sender, EventArgs e)
+        {
+            if (task.Sound.Repeat == 0)
+            {
+                outputDevice.Dispose();
+                if (afr != null)
+                {
+                    afr.Dispose();
+                }
+                if (wfr != null)
+                {
+                    wfr.Dispose();
+                }
+                // 繰り返しなしの場合で、音声の再生が有効だった場合は、ここで音声の再生を行う
+                if ((task.Message.Voice.Enable) && (!Voice_Play_Flag))
+                {
+                    Voice_Play();
+                    return;
+                }
+                Sound_Play_Flag = false;
+                Voice_Play_Flag = false;
+            }
+        }
+
+        static async public void Voice_Play()
+        {
+            Voice_Setting Setting = new Voice_Setting();
+            Setting = task.Message.Voice;
+            string Text = XML_Message.Message_List[task.Message.Message_No].Text;
+            Text = Voice_Ctrl.Text_Replace(Text, Setting);
+
+            byte[] wav = await Voice_Ctrl.Voice_Gen(Text, Setting);
+            if (wav != null)
+            {
+                Sound_Play_Flag = true;
+                Voice_Play_Flag = true;
+                outputDevice = new WaveOutEvent();
+                wfr = new WaveFileReader(new MemoryStream(wav));
+                outputDevice.DeviceNumber = Setting.Query.Device;
+                outputDevice.Init(wfr);
+                outputDevice.Volume = (float)(100 / 100f);
+                outputDevice.Play();
+                outputDevice.PlaybackStopped += Playback_Complete;
+            }
+        }
+
+        static public void SoundRepeat_Timer_Tick(object sender, EventArgs e)
+        {
+            afr.Position = 0;
+            outputDevice.Play();
         }
     }
 }

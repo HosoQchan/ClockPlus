@@ -19,6 +19,9 @@ namespace ClockPlus
 {
     public partial class MessageBox_Ex : MetroWindow
     {
+        private System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
+        private int Close_Timer = 0;
+
         public enum MessageType
         {
             Info,
@@ -34,10 +37,11 @@ namespace ClockPlus
             Ok,
         }
 
-        public MessageBox_Ex(string Message, MessageType Type, MessageButtons Buttons)
+        public MessageBox_Ex(string Message, int Timer, MessageType Type, MessageButtons Buttons)
         {
             InitializeComponent();
             txtMessage.Text = Message;
+            Close_Timer = Timer;
             switch (Type)
             {
                 case MessageType.Info:
@@ -71,6 +75,25 @@ namespace ClockPlus
                     break;
             }
             SetupButtonImage(Type);
+        }
+
+        private void Form_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Close_Timer > 0)
+            {
+                timer1.Interval = Close_Timer * 1000;
+                timer1.Tick += Timer1_Tick;
+                timer1.Start();
+            }
+        }
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
+        }
+        private void Form_Closed(object sender, EventArgs e)
+        {
+            timer1.Stop();
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e)

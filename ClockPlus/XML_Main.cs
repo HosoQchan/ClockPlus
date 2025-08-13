@@ -15,27 +15,44 @@ namespace ClockPlus
     [XmlRoot("Cnf")]
     public class Cnf
     {
-        [XmlElement("Theme")]
-        public Theme Theme { get; set; }
         [XmlElement("AutoStart")]
         public bool AutoStart { get; set; }
         [XmlElement("Password")]
         public string Password { get; set; }
+        [XmlElement("Theme")]
+        public Theme Theme { get; set; }
+        [XmlElement("Weather")]
+        public Weather Weather { get; set; }
         [XmlElement("Signal")]
         public Signal Signal { get; set; }
         [XmlElement("Voice")]
-        public Voice Voice { get; set; }
+        public VoiceEngine VoiceEngine { get; set; }
         [XmlElement("Display")]
         public Display Display { get; set; }
     }
 
     [XmlRoot("Theme")]
-    public class Theme         // テーマ設定
+    public class Theme          // テーマ設定
     {
         [XmlElement("Mode")]
         public string Mode { get; set; }
         [XmlElement("Color")]
         public string Color { get; set; }
+    }
+
+    [XmlRoot("Weather")]
+    public class Weather        // 天気
+    {
+        [XmlElement("Enable")]
+        public bool Enable { get; set; }
+        [XmlElement("Area")]
+        public string AreaCode { get; set; }
+        [XmlElement("Acquisition")]
+        public DateTime Acquisition { get; set; }
+        [XmlElement("Acquisition_Flg")]
+        public bool Acquisition_Flg { get; set; }
+        [XmlElement("Voice")]
+        public Voice_Setting Voice { get; set; }
     }
 
     [XmlRoot("Signal")]
@@ -51,17 +68,17 @@ namespace ClockPlus
         public int Volume { get; set; }
         [XmlElement("Cycle")]
         public int Cycle { get; set; }
+        [XmlElement("Voice")]
+        public Voice_Setting Voice { get; set; }
     }
 
-    [XmlRoot("Voice")]
-    public class Voice          // 音声合成設定
+    [XmlRoot("VoiceEngine")]
+    public class VoiceEngine     // 音声合成設定
     {
-        [XmlElement("Enable")]
-        public bool Enable { get; set; }
-        [XmlElement("Volume")]
-        public int Volume { get; set; }
-        [XmlElement("Rate")]
-        public int Rate { get; set; }
+        [XmlElement("Engine_Name")]
+        public string Engine_Name { get; set; }
+        [XmlElement("Path")]
+        public string Path { get; set; }
     }
 
     [XmlRoot("Display")]
@@ -173,9 +190,9 @@ namespace ClockPlus
             // 設定保存用ファイル名
             XML_Main_File = App_Path + "ClockPlus.xml";
 
-            // リソースからサウンドファイルを作成する
-            Sound_Ctrl sound_ctrl = new Sound_Ctrl();
-            sound_ctrl.Create_Sound_Files();
+            // Soundフォルダを作成
+            Info = Directory.CreateDirectory(XML_Main.App_Path + "sound");
+            XML_Main.Sound_Dir = Info.FullName;
 
             // skinフォルダを作成
             Info = Directory.CreateDirectory(App_Path + "skin");
@@ -257,13 +274,21 @@ namespace ClockPlus
         // 初期化
         public void XML_Main_Initialize()
         {
+            XML_Main.cnf.AutoStart = false;
+            XML_Main.cnf.Password = "";
+
             Theme theme = new Theme();
             theme.Mode = "Auto";
             theme.Color = "Steel";
             XML_Main.cnf.Theme = theme;
 
-            XML_Main.cnf.AutoStart = false;
-            XML_Main.cnf.Password = "";
+            Weather weather = new Weather();
+            weather.Enable = false;
+            weather.AreaCode = "130010";
+            weather.Acquisition = DateTime.MinValue;
+            weather.Acquisition_Flg = false;
+            weather.Voice = new Voice_Setting();
+            XML_Main.cnf.Weather = weather;
 
             Signal signal = new Signal();
             signal.Enable = true;
@@ -271,13 +296,13 @@ namespace ClockPlus
             signal.Device = 0;
             signal.Volume = 100;
             signal.Cycle = 60;
+            signal.Voice = new Voice_Setting();
             XML_Main.cnf.Signal = signal;
 
-            Voice voice = new Voice();
-            voice.Enable = false;
-            voice.Volume = 100;
-            voice.Rate = -2;
-            XML_Main.cnf.Voice = voice;
+            VoiceEngine VoiceEngine = new VoiceEngine();
+            VoiceEngine.Engine_Name = "無し";
+            VoiceEngine.Path = "";
+            XML_Main.cnf.VoiceEngine = VoiceEngine;
 
             Display display = new Display();
             Analog analog = new Analog();
@@ -355,6 +380,25 @@ namespace ClockPlus
                 digital.Format = "HH:mm:ss";
             }
             return digital;
+        }
+
+        // 設定されているスピーカー名が存在しない場合、デフォルト値に戻す処理
+        static public void Voice_Setting_Check()
+        {
+            Voice_Setting setting = new Voice_Setting();
+            setting = XML_Main.cnf.Signal.Voice;
+            if (Voice_Ctrl.Speaker_Check(setting) == 0)
+            {
+                XML_Main.cnf.Signal.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                XML_Main.cnf.Signal.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+            }
+            setting = new Voice_Setting();
+            setting = XML_Main.cnf.Weather.Voice;
+            if (Voice_Ctrl.Speaker_Check(setting) == 0)
+            {
+                XML_Main.cnf.Weather.Voice.Style.Name = Voice_Ctrl.speakers[0].Name;
+                XML_Main.cnf.Weather.Voice.Style.Type = Voice_Ctrl.speakers[0].Styles[0].Name;
+            }
         }
     }
 }

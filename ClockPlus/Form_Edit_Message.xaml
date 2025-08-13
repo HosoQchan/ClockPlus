@@ -1,0 +1,159 @@
+﻿<metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+    
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesignMahApps="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        xmlns:local="clr-namespace:ClockPlus"
+        x:Class="ClockPlus.Form_Edit_Message"
+    
+        Title="メッセージ" Loaded="Form_Loaded" Closed="Form_Closed" WindowStartupLocation="CenterScreen" ShowTitleBar="true" ShowMaxRestoreButton="False" ShowMinButton="False" ShowInTaskbar="True" ShowSystemMenu="False" TitleBarHeight="30" TitleCharacterCasing="Normal" FontFamily="Meiryo UI" Icon="./Resources/icon/Alarm.ico" Width="420" Height="465.33" ResizeMode="NoResize">
+
+    <metro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}" FontSize="16" FontFamily="Meiryo UI" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="Normal" Margin="8 -1 8 0"/>
+        </DataTemplate>
+    </metro:MetroWindow.TitleTemplate>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}" Header="テンプレート" Margin="1,1,1,1" FontSize="11" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
+                <ListView x:Name="ListView_Template" SelectionChanged="ListView_Template_SelectionChanged" FontSize="11" ScrollViewer.HorizontalScrollBarVisibility="Auto" Width="350" Height="150">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesign.Brush.Primary}"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Padding" Value="4"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListViewItem Content=""/>
+                    <ListViewItem Content=""/>
+                    <ListViewItem Content=""/>
+                    <ListViewItem Content=""/>
+                    <ListViewItem Content=""/>
+                </ListView>
+            </GroupBox>
+
+            <Grid Grid.Column="1">
+                <StackPanel HorizontalAlignment="Center" Grid.Row="1">
+                    <Button x:Name="Button_Delete" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Click="Button_Delete_Click" FontFamily="Meiryo UI" FontSize="11" ToolTip="削除" Margin="1,1,1,1">
+                        <Image Source="./Resources/icon/Delete.ico" Width="20" Height="20"/>
+                    </Button>
+                    <Button x:Name="Button_Add" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Click="Button_Add_Click" FontFamily="Meiryo UI" FontSize="11" ToolTip="追加" Margin="1,1,1,1">
+                        <Image Source="./Resources/icon/plus.ico" Width="20" Height="20"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}" Header="メッセージ" Margin="1,1,1,1" FontSize="11" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="テンプレート名" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBox x:Name="TextBox_Title" TextWrapping="Wrap" Text="" FontFamily="Meiryo UI" FontSize="11" Grid.Column="1" Margin="1,1,1,1" ToolTip="既存のテンプレート名を変更することはできません"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock TextWrapping="Wrap" Text="メッセージ内容" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                        <Button x:Name="Button_Question" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Click="Button_Question_Click" FontFamily="Meiryo UI" FontSize="11" ToolTip="メッセージ内容についての、仕様の説明を表示します" Margin="1,1,1,1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image Source="./Resources/icon/Question.ico" Width="20" Height="20"/>
+                        </Button>
+                    </Grid>
+                    <TextBox x:Name="TextBox_Message" TextWrapping="Wrap" Text="" FontFamily="Meiryo UI" FontSize="11" Grid.Column="1" ToolTip="メッセージ内容の仕様については、左の[?]アイコンをクリックしてください" Margin="1,1,1,1"/>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="表示時間" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="ComboBox_Time" SelectionChanged="ComboBox_Time_SelectionChanged" FontFamily="Meiryo UI" FontSize="11" Margin="1,1,1,1" Grid.Column="1"/>
+                    <TextBlock TextWrapping="Wrap" Text="秒" FontSize="11" FontFamily="Meiryo UI" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2"/>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Style="{DynamicResource MahApps.Styles.GroupBox.VisualStudio}" Header="音声" Margin="1,1,1,1" BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}" Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="207"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="13.97"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="TextBlock_Voice" TextWrapping="Wrap" Text="メッセージを音声で知らせる" FontSize="11" FontFamily="Meiryo UI" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+                <Grid x:Name="Grid_Voice" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="13.97"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <metro:ToggleSwitch x:Name="ToggleSwich_Voice" Margin="1,1,1,1" FontSize="11" FontFamily="Meiryo UI" Toggled="ToggleSwich_Voice_Toggled" metro:HeaderedControlHelper.HeaderFontFamily="Meiryo UI" metro:HeaderedControlHelper.HeaderFontSize="11" OffContent="" OnContent="" Grid.Row="1"/>
+                    <Button x:Name="Button_Voice" ToolTip="音声の設定を開きます" FontFamily="Meiryo" Click="Button_Voice_Click" Height="30" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+                        <Image Source="./Resources/icon/Voice.ico" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <TextBlock x:Name="TextBlock_Button_Play" TextWrapping="Wrap" Text="再生テスト" FontSize="11" FontFamily="Meiryo UI" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2"/>
+                    <Button x:Name="Button_Play" FontFamily="Meiryo UI" Click="Button_Play_Click" FontSize="11" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}" Height="30" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="2">
+                        <Image x:Name="Image_Button_Play" Source="./Resources/icon/Play.ico" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <Grid Grid.Row="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                    <Button Content="取り消し" Click="Button_Cancel_Click" Width="100" Height="30" Margin="2,2,2,2" FontFamily="Meiryo UI" FontWeight="Normal" FontSize="11" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+                    <Button Content="決定" Click="Button_Ok_Click" Width="100" Height="30" Margin="2,2,2,2" FontFamily="Meiryo UI" FontSize="11" FontWeight="Normal" Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</metro:MetroWindow>

@@ -46,7 +46,7 @@ namespace ClockPlus
         {
             if ((TextBox_FileName.Text == "") && (TextBox_Option.Text == ""))
             {
-                FormCtrl_Wpf.Info_Message("実行するアプリ・コマンドが設定されていません。");
+                FormCtrl_Wpf.Info_Message("実行するアプリやコマンドが設定されていません。", 0);
                 return;
             }
             else
@@ -79,7 +79,7 @@ namespace ClockPlus
         {
             if ((TextBox_FileName.Text == "") && (TextBox_Option.Text == ""))
             {
-                FormCtrl_Wpf.Info_Message("実行するアプリ・コマンドが設定されていません。");
+                FormCtrl_Wpf.Info_Message("実行するアプリ・コマンドが設定されていません。", 0);
                 return;
             }
             else

@@ -78,6 +78,7 @@ namespace ClockPlus
 
             ToggleSwitch_Alarm.IsOn = true;
             ToggleSwitch_App.IsOn = false;
+            ToggleSwitch_Balloon.IsOn = false;
             ToggleSwitch_Power.IsOn = false;
         }
 
@@ -177,6 +178,7 @@ namespace ClockPlus
 
                 ToggleSwitch_Alarm.IsOn = task.Sound.Enable;
                 ToggleSwitch_App.IsOn = task.App.Enable;
+                ToggleSwitch_Balloon.IsOn = task.Message.Enable;
                 ToggleSwitch_Power.IsOn = task.Power.Enable;
 
                 ComboBox_Power.Text = task.Power.Mode;
@@ -285,15 +287,18 @@ namespace ClockPlus
             {
                 ComboBox_Power.Visibility = Visibility.Visible;
                 ToggleSwitch_Alarm.IsEnabled = false;
-                ToggleSwitch_App.IsEnabled = false;
                 ToggleSwitch_Alarm.IsOn = false;
+                ToggleSwitch_App.IsEnabled = false;
                 ToggleSwitch_App.IsOn = false;
+                ToggleSwitch_Balloon.IsEnabled = false;
+                ToggleSwitch_Balloon.IsOn = false;
             }
             else
             {
                 ComboBox_Power.Visibility = Visibility.Hidden;
                 ToggleSwitch_Alarm.IsEnabled = true;
                 ToggleSwitch_App.IsEnabled = true;
+                ToggleSwitch_Balloon.IsEnabled = true;
             }
 
             if (ToggleSwitch_Alarm.IsOn == true)
@@ -313,6 +318,16 @@ namespace ClockPlus
             {
                 App_Setting_Button.Visibility = Visibility.Hidden;      // 非表示にする(コンポーネントの場所はそのまま)
             }
+
+            if (ToggleSwitch_Balloon.IsOn == true)
+            {
+                Balloon_Setting_Button.Visibility = Visibility.Visible; // 表示する
+            }
+            else
+            {
+                Balloon_Setting_Button.Visibility = Visibility.Hidden;  // 非表示にする(コンポーネントの場所はそのまま)
+            }
+
             Form_Loaded_Flag = true;
         }
 
@@ -365,20 +380,20 @@ namespace ClockPlus
             // どれか一つでも曜日が選択されているかのチェック
             if (Week_Check() == false)
             {
-                FormCtrl_Wpf.Info_Message("曜日が選択されていません。");
+                FormCtrl_Wpf.Info_Message("曜日が選択されていません。", 0);
                 return;
             }
 
             // どれか一つでも実行するタスクが選択されているかのチェック
             if (TaskCheck() == false)
             {
-                FormCtrl_Wpf.Info_Message("実行する科目が選択されていません。");
+                FormCtrl_Wpf.Info_Message("実行する科目が選択されていません。", 0);
                 return;
             }
 
             if ((Edit_No == -1) && (Task_Name_Check(TextBox_Task_Name.Text)))
             {
-                FormCtrl_Wpf.Info_Message("同じ名称が既に存在します。\r\n名称を変更してください。");
+                FormCtrl_Wpf.Info_Message("同じ名称が既に存在します。\r\n名称を変更してください。", 0);
                 return;
             }
 
@@ -399,7 +414,7 @@ namespace ClockPlus
             {
                 if (Tgt_dtime <= Now_dtime)
                 {
-                    FormCtrl_Wpf.Info_Message("過去又は現在の日時を設定することは出来ません。");
+                    FormCtrl_Wpf.Info_Message("過去又は現在の日時を設定することは出来ません。", 0);
                     return;
                 }
             }
@@ -463,6 +478,7 @@ namespace ClockPlus
         private bool TaskCheck()
         {
             if (ToggleSwitch_Alarm.IsOn) { return true; }
+            if (ToggleSwitch_Balloon.IsOn) { return true; }
             if (ToggleSwitch_App.IsOn) { return true; }
             if (ToggleSwitch_Power.IsOn) { return true; }
             return false;
@@ -590,24 +606,26 @@ namespace ClockPlus
 
         private void Alarm_Setting_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Form_Loaded_Flag)
-            {
-                Form_Edit_Sound Form = new Form_Edit_Sound();
-                Form.task_sound = task.Sound;
-                Form.ShowDialog();
-                task.Sound = Form.task_sound;
-            }
+            Form_Edit_Sound Form = new Form_Edit_Sound();
+            Form.task_sound = task.Sound;
+            Form.ShowDialog();
+            task.Sound = Form.task_sound;
         }
 
         private void App_Setting_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Form_Loaded_Flag)
-            {
-                Form_Edit_App Form = new Form_Edit_App();
-                Form.task_app = task.App;
-                Form.ShowDialog();
-                task.App = Form.task_app;
-            }
+            Form_Edit_App Form = new Form_Edit_App();
+            Form.task_app = task.App;
+            Form.ShowDialog();
+            task.App = Form.task_app;
+        }
+
+        private void Balloon_Setting_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Form_Edit_Message Form = new Form_Edit_Message();
+            Form.task_message = task.Message;
+            Form.ShowDialog();
+            task.Message = Form.task_message;
         }
 
         private void ToggleSwitch_Power_Toggled(object sender, RoutedEventArgs e)
@@ -627,6 +645,13 @@ namespace ClockPlus
         }
 
         private void ToggleSwitch_App_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Form_Loaded_Flag)
+            {
+                Visibility_Change();    // 設定の内容によってコントーロールの表示/非表示を切り替える
+            }
+        }
+        private void ToggleSwitch_Balloon_Toggled(object sender, RoutedEventArgs e)
         {
             if (Form_Loaded_Flag)
             {

@@ -15,6 +15,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.IO;
+using System.Security;
+using static ClockPlus.Date_Picker;
 
 namespace ClockPlus
 {
@@ -49,6 +52,13 @@ namespace ClockPlus
         static public System.Drawing.Color Color_Code(string rgb)
         {
             return ColorTranslator.FromHtml(rgb);
+        }
+
+        // stringのデフォルトエンコーディングにて、文字列のByte数を求める
+        static public int Text_Byte_Leng(string str)
+        {
+            // UTF-16 (C# string のデフォルトエンコーディング)
+            return Encoding.Unicode.GetByteCount(str);
         }
 
         // 指定の文字、又はバックスペース以外の場合はfalseを返す
@@ -86,6 +96,80 @@ namespace ClockPlus
             }
             // 半角英数チェック
             return Regex.IsMatch(str, @"^[a-zA-Z0-9]+$");
+        }
+
+        // 現在の時刻から挨拶文を生成する
+        static public string Hellow_Gen()
+        {
+            DateTime dt = DateTime.Now;
+            // "おはようございます！"の時間帯
+            if ((dt.Hour >= 5) && (dt.Hour <= 9))
+            {
+                return "お早うございます！";
+            }
+            // "こんにちは！"の時間帯
+            if ((dt.Hour >= 10) && (dt.Hour <= 16))
+            {
+                return "こんにちは！";
+            }
+            // "こんばんは！"の時間帯
+            return "こんばんは！";
+        }
+
+        // 時刻を日本語文に変換する
+        static public string NowTime_Gen(bool Hour24, DateTime dt)
+        {
+            string Text = "";
+            Int_Dtime_Item dtime_Item = new Int_Dtime_Item();
+            dtime_Item = Date_Picker.DateTime_int(dt);
+            if (!Hour24)
+            {
+                if (dtime_Item.Time_H < 13)
+                {
+                    Text = Text + "午前";
+                }
+                else
+                {
+                    Text = Text + "午後";
+                    dtime_Item.Time_H = dtime_Item.Time_H - 12;
+                }
+            }
+            Text = Text + dtime_Item.Time_H.ToString();
+            Text = Text + "時";
+
+            if (dtime_Item.Time_M > 0)
+            {
+                Text = Text + dtime_Item.Time_M.ToString() + "分";
+            }
+            return Text;
+        }
+
+        // フォルダ選択ダイアログ
+        static public string Dlg_Folder_Select(string InitialDir)
+        {
+            if (!Directory.Exists(InitialDir))
+            {
+                InitialDir = "c:";
+            }
+
+            // OpenFolderDialogクラスのインスタンスを作成
+            Microsoft.Win32.OpenFolderDialog dlg = new Microsoft.Win32.OpenFolderDialog();
+
+            // はじめに表示されるフォルダを指定する
+            dlg.InitialDirectory = InitialDir;
+
+            //タイトルを設定する
+            dlg.Title = "フォルダを選択してください";
+
+            //複数フォルダ選択を許可するか
+            dlg.Multiselect = false;
+
+            if (dlg.ShowDialog() == true)
+            {
+                return dlg.FolderName;
+
+            }
+            return "";
         }
 
         // ファイル選択ダイアログ

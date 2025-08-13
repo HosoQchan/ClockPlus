@@ -37,7 +37,9 @@ namespace ClockPlus
         public Form_Edit_Sound()
         {
             InitializeComponent();
-            List<string> Device_List = Sound_Ctrl.Get_Device_List();
+            ComboBox_Cycle.ToolTip = "[0:繰り返し無し]\r\n[1:以上]の場合、音声は再生されません！";
+
+            List<string> Device_List = Task_Ctrl.Get_Device_List();
             foreach (string Device in Device_List)
             {
                 ComboBox_Device.Items.Add(Device);

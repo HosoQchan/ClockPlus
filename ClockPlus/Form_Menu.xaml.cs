@@ -47,6 +47,7 @@ namespace ClockPlus
 
         private void Button_Setting_Click(object sender, RoutedEventArgs e)
         {
+            Form_Setting_Main.Tab_Page = 1;
             WindowManager.ShowOrActivate<Form_Setting_Main>();
             this.Close();
         }

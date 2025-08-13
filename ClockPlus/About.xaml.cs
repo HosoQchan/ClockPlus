@@ -72,7 +72,7 @@ namespace ClockPlus
         }
 
         // リンク先を開く
-        private void Link_Display(string URL)
+        static public void Link_Display(string URL)
         {
             //レジストリキー（HKEY_CURRENT_USER\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice）
             //を、新規作成されない様に開く
