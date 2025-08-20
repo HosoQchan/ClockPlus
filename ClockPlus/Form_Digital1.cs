@@ -59,6 +59,7 @@ namespace ClockPlus
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // 位置・不透明度・最前面の設定
             this.Location = new Point(XML_Main.cnf.Display.Digtal[0].PosX, XML_Main.cnf.Display.Digtal[0].PosY);
             this.Opacity = XML_Main.cnf.Display.Digtal[0].Opacity;
             this.TopMost = XML_Main.cnf.Display.Digtal[0].TopMost;

@@ -280,34 +280,46 @@ namespace ClockPlus
             }
 
             // 天気予報の表示位置が範囲内かの確認
-            if ((cnf.Weather.Weather_Disp[0].PosX > Display_Width) || (cnf.Weather.Weather_Disp[0].PosY > Display_Height))
-            {
-                cnf.Weather.Weather_Disp[0].PosX = XML_Main.Display_Width / 2;
-                cnf.Weather.Weather_Disp[0].PosY = XML_Main.Display_Height / 2;
-            }
-            if ((cnf.Weather.Weather_Disp[1].PosX > Display_Width) || (cnf.Weather.Weather_Disp[0].PosY > Display_Height))
-            {
-                cnf.Weather.Weather_Disp[1].PosX = XML_Main.Display_Width / 2;
-                cnf.Weather.Weather_Disp[1].PosY = XML_Main.Display_Height / 2;
-            }
+            cnf.Weather.Weather_Disp[0].PosX = PosX_Check(cnf.Weather.Weather_Disp[0].PosX);
+            cnf.Weather.Weather_Disp[0].PosY = PosY_Check(cnf.Weather.Weather_Disp[0].PosY);
+
+            cnf.Weather.Weather_Disp[1].PosX = PosX_Check(cnf.Weather.Weather_Disp[1].PosX);
+            cnf.Weather.Weather_Disp[1].PosY = PosY_Check(cnf.Weather.Weather_Disp[1].PosY);
 
             // 時計の表示位置が範囲内かの確認
-            if ((cnf.Display.Analog.PosX > Display_Width) || (cnf.Display.Analog.PosY > Display_Height))
-            {
-                cnf.Display.Analog.PosX = XML_Main.Display_Width / 2;
-                cnf.Display.Analog.PosY = XML_Main.Display_Height / 2;
-            }
+            cnf.Display.Analog.PosX = PosX_Check(cnf.Display.Analog.PosX);
+            cnf.Display.Analog.PosY = PosY_Check(cnf.Display.Analog.PosY);
 
-            if ((cnf.Display.Digtal[0].PosX > Display_Width) || (cnf.Display.Digtal[0].PosY > Display_Height))
+            cnf.Display.Digtal[0].PosX = PosX_Check(cnf.Display.Digtal[0].PosX);
+            cnf.Display.Digtal[0].PosY = PosY_Check(cnf.Display.Digtal[0].PosY);
+
+            cnf.Display.Digtal[1].PosX = PosX_Check(cnf.Display.Digtal[1].PosX);
+            cnf.Display.Digtal[1].PosY = PosY_Check(cnf.Display.Digtal[1].PosY);
+        }
+
+        private int PosX_Check(int PosX)
+        {
+            if (PosX < 0)
             {
-                cnf.Display.Digtal[0].PosX = XML_Main.Display_Width / 2;
-                cnf.Display.Digtal[0].PosY = XML_Main.Display_Height / 2;
+                return 0;
             }
-            if ((cnf.Display.Digtal[1].PosX > Display_Width) || (cnf.Display.Digtal[1].PosY > Display_Height))
+            if (PosX > Display_Width)
             {
-                cnf.Display.Digtal[1].PosX = XML_Main.Display_Width / 2;
-                cnf.Display.Digtal[1].PosY = XML_Main.Display_Height / 2;
+                return XML_Main.Display_Width / 2;
             }
+            return PosX;
+        }
+        private int PosY_Check(int PosY)
+        {
+            if (PosY < 0)
+            {
+                return 0;
+            }
+            if (PosY > Display_Height)
+            {
+                return XML_Main.Display_Height / 2;
+            }
+            return PosY;
         }
 
         // 初期化

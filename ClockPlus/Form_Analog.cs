@@ -22,18 +22,30 @@ namespace ClockPlus
         private ContextMenuStrip ContextMenu = new ContextMenuStrip();
 
         private Point mousePoint;
+        private const int Width = 960;
+        private const int Height = 960;
 
         public Bitmap Clk_Face;
         public Bitmap Clk_Second;
         public Bitmap Clk_Minute;
         public Bitmap Clk_Hour;
 
-        static public Size Clk_Size;
         public System.Windows.Forms.ToolTip tooltip = new System.Windows.Forms.ToolTip();
 
         public Form_Analog()
         {
             InitializeComponent();
+            Pbox_face.Dock = DockStyle.Fill;                    // pictureBoxをForm1に合わせて適切なサイズに調節
+            Pbox_face.SizeMode = PictureBoxSizeMode.Zoom;       // pictureBoxをサイズ比率を維持して拡大・縮小
+
+            Pbox_Hour.Dock = DockStyle.Fill;
+            Pbox_Hour.SizeMode = PictureBoxSizeMode.Zoom;
+
+            Pbox_Min.Dock = DockStyle.Fill;
+            Pbox_Min.SizeMode = PictureBoxSizeMode.Zoom;
+
+            Pbox_Sec.Dock = DockStyle.Fill;
+            Pbox_Sec.SizeMode = PictureBoxSizeMode.Zoom;
 
             // コンテキストメニューの作成
             ContextMenu = App.ContextMenu_Create();
@@ -61,13 +73,13 @@ namespace ClockPlus
 
         private void Analog_Disp_Load(object sender, EventArgs e)
         {
-            // フォームの位置を設定
+            // アナログ時計の倍率設定
+            Form_Analog.Analog_Disp_Size(App.form_analog);
+
+            // 位置・不透明度・最前面の設定
             this.Location = new Point(XML_Main.cnf.Display.Analog.PosX, XML_Main.cnf.Display.Analog.PosY);
             this.Opacity = XML_Main.cnf.Display.Analog.Opacity;
             this.TopMost = XML_Main.cnf.Display.Analog.TopMost;
-
-            Pbox_Sec.MouseDown += PBox_Sec_MouseDown;
-            Pbox_Sec.MouseMove += PBox_Sec_MouseMove;
 
             Analog_Disp_init();                     // アナログ時計を表示
             if (Analog_Disp_Check())
@@ -75,6 +87,9 @@ namespace ClockPlus
                 FormCtrl_Net.valid_Form(this);      // フォームを表示
                 Analog_Disp_Drow();                 // アナログ時計の描画更新
             }
+
+            Pbox_Sec.MouseDown += PBox_Sec_MouseDown;
+            Pbox_Sec.MouseMove += PBox_Sec_MouseMove;
         }
 
         private void Analog_Disp_FormClosed(object sender, FormClosedEventArgs e)
@@ -155,24 +170,6 @@ namespace ClockPlus
             Clk_Minute = (Bitmap)Image.FromFile(Dir + "Clock_Hand_Min.png");     // 分
             Clk_Hour = (Bitmap)Image.FromFile(Dir + "Clock_Hand_Hours.png");     // 時
 
-            // 時計の基本サイズ
-            int x = Clk_Face.Width;
-            int y = Clk_Face.Height;
-            Clk_Size = new Size(x, y);
-            Analog_Disp_Size(App.form_analog);                  // アナログ時計の倍率設定
-
-            Pbox_face.Dock = DockStyle.Fill;                    // pictureBoxをForm1に合わせて適切なサイズに調節
-            Pbox_face.SizeMode = PictureBoxSizeMode.Zoom;       // pictureBoxをサイズ比率を維持して拡大・縮小
-
-            Pbox_Hour.Dock = DockStyle.Fill;
-            Pbox_Hour.SizeMode = PictureBoxSizeMode.Zoom;
-
-            Pbox_Min.Dock = DockStyle.Fill;
-            Pbox_Min.SizeMode = PictureBoxSizeMode.Zoom;
-
-            Pbox_Sec.Dock = DockStyle.Fill;
-            Pbox_Sec.SizeMode = PictureBoxSizeMode.Zoom;
-
             Clk_Face.MakeTransparent();
             Clk_Hour.MakeTransparent();
             Clk_Minute.MakeTransparent();
@@ -206,11 +203,11 @@ namespace ClockPlus
         // アナログ時計の描画更新
         public void Analog_Disp_Drow()
         {
-            if (!XML_Main.cnf.Display.Analog.Enable)
-            {
-                this.WindowState = FormWindowState.Minimized;
-            }
-            this.WindowState = FormWindowState.Normal;
+            // アナログ時計の倍率設定
+            Form_Analog.Analog_Disp_Size(this);
+
+            // 位置の設定
+            this.Location = new Point(XML_Main.cnf.Display.Analog.PosX, XML_Main.cnf.Display.Analog.PosY);
 
             DateTime time = DateTime.Now;
             float SecondAng = (float)(time.Second * 6.0);
@@ -273,8 +270,8 @@ namespace ClockPlus
         {
             int Wid;
             int Hei;
-            Wid = (int)((Form_Analog.Clk_Size.Width) * (XML_Main.cnf.Display.Analog.Zoom));
-            Hei = (int)((Form_Analog.Clk_Size.Height) * (XML_Main.cnf.Display.Analog.Zoom));
+            Wid = (int)(Width * (XML_Main.cnf.Display.Analog.Zoom));
+            Hei = (int)(Height * (XML_Main.cnf.Display.Analog.Zoom));
             System.Drawing.Size Form_size = new System.Drawing.Size(Wid, Hei);
             form.Size = Form_size;
         }

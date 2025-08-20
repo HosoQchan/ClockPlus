@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using NAudio.Wave;
 using static MaterialDesignThemes.Wpf.Theme;
 using System.Windows.Controls.Primitives;
+using System;
 
 namespace ClockPlus
 {
@@ -378,15 +379,14 @@ namespace ClockPlus
                 form_digital2.tooltip.SetToolTip(form_digital2.PicBox_Disp, App.Notify_disp());
                 */
 
-                // アナログ時計
                 if (Form_Analog.Analog_Disp_Check())
                 {
-                    FormCtrl_Net.valid_Form(form_analog);           // フォームを表示
+                    FormCtrl_Net.valid_Form(form_analog);       // フォームを表示
                     form_analog.Analog_Disp_Drow();
                 }
                 else
                 {
-                    FormCtrl_Net.Hide_Form(form_analog);            // フォームを非表示
+                    FormCtrl_Net.Hide_Form(form_analog);        // フォームを非表示
                 }
 
                 if (Digital_Drow.Digital_Disp_Check(0))

@@ -169,11 +169,14 @@ namespace ClockPlus
 
                 // タイトル・見出し（例・福岡県 久留米 の天気）
                 Text = WeatherHacks.tenki.title;
-                g.DrawString(Text, fnt, Text_Color, new RectangleF(12, 9, 194, 23), sf_left);
+                Text = Text.Replace(" の天気", "");
+                g.DrawString(Text, fnt, Text_Color, new RectangleF(12, 9, 135, 23), sf_left);
 
                 // 予報日（今日・明日・明後日のいずれか）
                 Text = forecast.dateLabel;
-                g.DrawString(Text, fnt, Text_Color, new RectangleF(212, 9, 50, 23), sf_right);
+                DateTime dt = DateTime.Parse(forecast.date);
+                Text = Text + dt.ToString(" d日(ddd)");
+                g.DrawString(Text, fnt, Text_Color, new RectangleF(153, 9, 113, 23), sf_right);
 
                 // 天気（晴れ、曇り、雨など）
                 Text = forecast.telop;
@@ -202,6 +205,13 @@ namespace ClockPlus
                 //画像をcanvasの指定座標に描画する
                 g.DrawImage(bmp, 12, 59, 80, 60);
             }
+            else
+            {
+                // タイトル・見出し（例・福岡県 久留米 の天気）
+                Text = "データ無し";
+                g.DrawString(Text, fnt, Text_Color, new RectangleF(12, 9, 135, 23), sf_left);
+            }
+
             if (XML_Main.cnf.Weather.Weather_Disp[1].Clear_Background)
             {
                 PictureBox_Form.BackColor = Color.Transparent;    // 背景色を透過にする

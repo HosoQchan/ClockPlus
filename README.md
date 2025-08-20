@@ -37,9 +37,9 @@
 ・.NET8.0以上
   
 # インストール方法  
-最新のClockPlus.zipを、 https://mobidrive.com/sharelink/z/2JnYjGYUEhFlQ5QEUwKeZA746IRQ7gMHDTXc7yjgoDdd からダウンロードし、
-ClockPlus.zipを適当な場所に解凍して下さい。  
-解凍してできたClockPlusディレクトリ下の"ClockPlus.exe"をダブルクリックで起動出来ます。
+https://mobidrive.com/sharelink/f/2JnYjGYUEhFlQ5QEUwKeZA5yZI87JEWedhBqg3KHGioc から、 
+最新のバージョン(ClockPlus Ver x.x.x.x.zip)をダウンロードし、任意の場所に解凍後、 
+ClockPlusディレクトリ下の"ClockPlus.exe"をダブルクリックで起動出来ます。
  
 又、音声合成による通知機能を利用する為には、下記アプリの何れかがインストールされている必要があります。
 ・AivisSpeech "https://aivis-project.com" 

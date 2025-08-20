@@ -90,6 +90,10 @@ namespace ClockPlus
                 // バックアップしておいた設定値を復元する
                 XML_Main.cnf.Display.Analog = Etc.JsonSerializerClone(Setting_Backup);
 
+                // アナログ時計の倍率設定
+                Form_Analog.Analog_Disp_Size(App.form_analog);
+
+                // 位置・不透明度・最前面の設定
                 App.form_analog.Location = new System.Drawing.Point(XML_Main.cnf.Display.Analog.PosX, XML_Main.cnf.Display.Analog.PosY);
                 App.form_analog.TopMost = XML_Main.cnf.Display.Analog.TopMost;
                 App.form_analog.Opacity = XML_Main.cnf.Display.Analog.Opacity;
@@ -115,6 +119,7 @@ namespace ClockPlus
             {
                 TextBlock_Zoom.Text = Slider_Zoom.Value.ToString("P0");
                 XML_Main.cnf.Display.Analog.Zoom = Slider_Zoom.Value;
+                // アナログ時計の倍率設定
                 Form_Analog.Analog_Disp_Size(App.form_analog);
             }
         }
@@ -177,6 +182,10 @@ namespace ClockPlus
                 XML_Main.cnf.Display.Analog = XML_Main.XML_Display_Analog_Initialize();
                 Read_Setting();
 
+                // アナログ時計の倍率設定
+                Form_Analog.Analog_Disp_Size(App.form_analog);
+
+                // 位置・不透明度・最前面の設定
                 App.form_analog.Location = new System.Drawing.Point(XML_Main.cnf.Display.Analog.PosX, XML_Main.cnf.Display.Analog.PosY);
                 App.form_analog.TopMost = XML_Main.cnf.Display.Analog.TopMost;
                 App.form_analog.Opacity = XML_Main.cnf.Display.Analog.Opacity;
